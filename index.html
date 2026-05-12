@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2026/6/19 台南行筆記</title>
+  <style>
+    :root {
+      --bg: #fff8ef;
+      --paper: #ffffff;
+      --paper-soft: #fffaf3;
+      --ink: #2f2a24;
+      --muted: #7c7065;
+      --line: #eadcc9;
+      --accent: #d97706;
+      --accent-dark: #92400e;
+      --accent-soft: #ffedd5;
+      --green: #4d7c0f;
+      --green-soft: #ecfccb;
+      --blue: #0369a1;
+      --blue-soft: #e0f2fe;
+      --pink: #be185d;
+      --pink-soft: #fce7f3;
+      --shadow: 0 18px 45px rgba(80, 48, 20, 0.12);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --max: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(251, 191, 36, 0.18), transparent 32rem),
+        radial-gradient(circle at top right, rgba(251, 146, 60, 0.16), transparent 28rem),
+        var(--bg);
+      line-height: 1.75;
+    }
+
+    a {
+      color: var(--accent-dark);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 18px 64px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 55%, #fed7aa 100%);
+      box-shadow: var(--shadow);
+      padding: 34px;
+      margin-bottom: 22px;
+      border: 1px solid rgba(217, 119, 6, 0.18);
+    }
+
+    .hero::after {
+      content: "台南";
+      position: absolute;
+      right: 26px;
+      bottom: -30px;
+      font-size: clamp(72px, 18vw, 190px);
+      font-weight: 900;
+      color: rgba(146, 64, 14, 0.08);
+      letter-spacing: -0.12em;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--accent-dark);
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3, h4 {
+      line-height: 1.25;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 58px);
+      letter-spacing: -0.04em;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      max-width: 680px;
+      color: #5b4632;
+      font-size: 17px;
+      margin: 0 0 22px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: var(--accent-dark);
+      color: #fff;
+      font-weight: 800;
+      box-shadow: 0 10px 22px rgba(146, 64, 14, 0.18);
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--accent-dark);
+      border: 1px solid rgba(146, 64, 14, 0.16);
+      box-shadow: none;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin: 18px 0 24px;
+    }
+
+    .meta-card,
+    .section-card,
+    .day-card,
+    .info-card,
+    .food-card {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(234, 220, 201, 0.9);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 10px 30px rgba(80, 48, 20, 0.08);
+    }
+
+    .meta-card {
+      padding: 18px;
+    }
+
+    .meta-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .meta-value {
+      font-size: 18px;
+      font-weight: 850;
+      margin-top: 4px;
+    }
+
+    .nav {
+      position: sticky;
+      top: 12px;
+      z-index: 9;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px;
+      margin: 0 0 26px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 24px rgba(80, 48, 20, 0.08);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav a {
+      white-space: nowrap;
+      padding: 8px 13px;
+      border-radius: 999px;
+      color: #5f4327;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .nav a:hover {
+      background: var(--accent-soft);
+      text-decoration: none;
+    }
+
+    section {
+      margin: 28px 0;
+      scroll-margin-top: 92px;
+    }
+
+    .section-card {
+      padding: 26px;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(24px, 3vw, 34px);
+      letter-spacing: -0.03em;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 850;
+      color: var(--accent-dark);
+      background: var(--accent-soft);
+      border: 1px solid rgba(217, 119, 6, 0.18);
+    }
+
+    .pill.green {
+      color: var(--green);
+      background: var(--green-soft);
+      border-color: rgba(77, 124, 15, 0.18);
+    }
+
+    .pill.blue {
+      color: var(--blue);
+      background: var(--blue-soft);
+      border-color: rgba(3, 105, 161, 0.16);
+    }
+
+    .pill.pink {
+      color: var(--pink);
+      background: var(--pink-soft);
+      border-color: rgba(190, 24, 93, 0.14);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .info-card {
+      padding: 18px;
+    }
+
+    .info-card h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .info-card p,
+    .info-card ul {
+      margin: 0;
+      color: #55483e;
+    }
+
+    .info-card ul {
+      padding-left: 20px;
+    }
+
+    .day-card {
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .day-header {
+      padding: 24px 26px;
+      background: linear-gradient(135deg, #fff7ed, #ffedd5);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .day-header h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: -0.04em;
+    }
+
+    .day-header p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-weight: 650;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0;
+      padding: 8px 0;
+    }
+
+    .time-slot {
+      padding: 18px 22px;
+      color: var(--accent-dark);
+      font-weight: 900;
+      border-right: 1px dashed var(--line);
+    }
+
+    .plan-item {
+      padding: 18px 22px;
+      border-bottom: 1px solid rgba(234, 220, 201, 0.65);
+    }
+
+    .plan-item:last-child {
+      border-bottom: 0;
+    }
+
+    .plan-item h3 {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .plan-item p {
+      margin: 0;
+      color: #55483e;
+    }
+
+    .highlight {
+      font-weight: 850;
+      color: var(--accent-dark);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--paper);
+      margin: 14px 0;
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 16px 18px;
+      font-weight: 900;
+      color: #4a3420;
+      background: var(--paper-soft);
+    }
+
+    details[open] summary {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .details-body {
+      padding: 16px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .food-card {
+      padding: 15px;
+    }
+
+    .food-card h4 {
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .food-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 0 8px;
+    }
+
+    .notice-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .notice-list ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 42px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .meta-grid,
+      .three-col,
+      .notice-list,
+      .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      .page {
+        padding: 14px 12px 44px;
+      }
+
+      .hero,
+      .section-card {
+        padding: 22px;
+        border-radius: 22px;
+      }
+
+      .meta-grid,
+      .two-col,
+      .three-col,
+      .notice-list,
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .time-slot {
+        border-right: 0;
+        border-bottom: 1px dashed var(--line);
+        padding-bottom: 8px;
+      }
+
+      .plan-item {
+        padding-top: 10px;
+      }
+
+      .nav {
+        border-radius: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero" id="top">
+      <div class="eyebrow">🍜 2026 夏日小旅行</div>
+      <h1>2026/6/19 台南行筆記</h1>
+      <p>三天兩夜、朋友同行、飲料與小吃密度偏高。這份版本把原本 Markdown 筆記整理成可以手機打開看的旅行控制台。</p>
+      <div class="hero-actions">
+        <a class="button" href="https://maps.app.goo.gl/6GgBtw93kXtPXh2CA" target="_blank" rel="noreferrer">打開共用地圖</a>
+        <a class="button secondary" href="#day1">看 Day 1</a>
+        <a class="button secondary" href="#notes">執行提醒</a>
+      </div>
+    </header>
+
+    <div class="meta-grid" aria-label="旅行概要">
+      <article class="meta-card">
+        <div class="meta-label">日期</div>
+        <div class="meta-value">6/19（五）～ 6/21（日）</div>
+      </article>
+      <article class="meta-card">
+        <div class="meta-label">住宿</div>
+        <div class="meta-value">中西區尊王路附近</div>
+      </article>
+      <article class="meta-card">
+        <div class="meta-label">交通主軸</div>
+        <div class="meta-value">高鐵＋沙崙線＋租機車</div>
+      </article>
+      <article class="meta-card">
+        <div class="meta-label">風格</div>
+        <div class="meta-value">慢慢晃，不跑 Sprint</div>
+      </article>
+    </div>
+
+    <nav class="nav" aria-label="頁面導覽">
+      <a href="#transport">交通</a>
+      <a href="#stay">住宿</a>
+      <a href="#day1">Day 1</a>
+      <a href="#day2">Day 2</a>
+      <a href="#day3">Day 3</a>
+      <a href="#notes">提醒</a>
+    </nav>
+
+    <section id="transport">
+      <div class="section-card">
+        <div class="section-title">
+          <h2>交通</h2>
+          <span class="pill blue">移動策略</span>
+        </div>
+        <div class="three-col">
+          <article class="info-card">
+            <h3>南下交通</h3>
+            <ul>
+              <li><strong>高鐵：</strong>首選，北部組自行協調出發時間。</li>
+              <li><strong>接駁：</strong>抵達台南高鐵站後，轉乘沙崙線到台南火車站。</li>
+            </ul>
+          </article>
+          <article class="info-card">
+            <h3>市區交通</h3>
+            <ul>
+              <li><strong>租機車：</strong>建議在台南火車站附近租，預估每日 350～500 元。</li>
+              <li><strong>備案：</strong>YouBike 公共自行車。</li>
+            </ul>
+          </article>
+          <article class="info-card">
+            <h3>回程交通</h3>
+            <ul>
+              <li><strong>高鐵：</strong>回程時間待討論。</li>
+              <li><strong>接駁：</strong>台南火車站轉沙崙線前往高鐵站。</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="stay">
+      <div class="section-card">
+        <div class="section-title">
+          <h2>住宿</h2>
+          <span class="pill green">Base Camp</span>
+        </div>
+        <div class="two-col">
+          <article class="info-card">
+            <h3>Airbnb</h3>
+            <p><a href="https://www.airbnb.com/l/4uJKBN7o?s=67&unique_share_id=a61d89cd-4d3e-4c8d-a875-61c133b91706" target="_blank" rel="noreferrer">打開住宿連結</a></p>
+          </article>
+          <article class="info-card">
+            <h3>入住／退房</h3>
+            <p><strong>6/19 15:00</strong> 入住<br /><strong>6/21 11:00</strong> 退房</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="day1">
+      <article class="day-card">
+        <div class="day-header">
+          <span class="pill">Day 1｜6/19（五）</span>
+          <h2>中西區散步、小吃、神農街與夜市</h2>
+          <p>主軸是抵達、入住、慢慢進入台南節奏。不要太硬核，留體力給晚上。</p>
+        </div>
+        <div class="timeline">
+          <div class="time-slot">中午</div>
+          <div class="plan-item">
+            <h3>抵達台南火車站租車，前往中西區民宿寄放行李／入住</h3>
+            <p>午餐：<span class="highlight">矮仔成蝦仁飯＋鼎富發豬油拌飯</span>。兩間距離近，適合小吃連線；鼎富發建議多人分食，保留下午飲料與晚餐戰力。</p>
+          </div>
+          <div class="time-slot">下午</div>
+          <div class="plan-item">
+            <h3>台南美術館 2 館、蝸牛巷、國華街、正興街</h3>
+            <p>點心：<span class="highlight">阿松割包、金得春捲</span>；飲料擇一：青山茶行／雙全紅茶／布萊恩紅茶。中午太飽就不用硬吃。</p>
+          </div>
+          <div class="time-slot">傍晚</div>
+          <div class="plan-item">
+            <h3>海安路、河樂廣場，轉往神農街</h3>
+            <p>休息備案：<span class="highlight">Present Coffee／秘氏咖啡</span>。精神還在線上就直接散步，太熱就進咖啡廳冷卻。</p>
+          </div>
+          <div class="time-slot">晚上</div>
+          <div class="plan-item">
+            <h3>神農街、海安路街區、大東／大東東夜市</h3>
+            <p>晚餐：<span class="highlight">南興炒鱔魚</span>；宵夜：<span class="highlight">阿文豬心冬粉</span>；夜市以散步、遊戲、分食點心為主。</p>
+          </div>
+        </div>
+      </article>
+
+      <details open>
+        <summary>Day 1 飲料與冰品</summary>
+        <div class="details-body card-grid">
+          <article class="food-card"><div class="tag-row"><span class="pill blue">下午</span></div><h4>青山茶行</h4><p>南美館、國華街、正興街順路；推薦琥珀冰磚奶、琥珀檸檬。</p></article>
+          <article class="food-card"><div class="tag-row"><span class="pill blue">下午</span></div><h4>雙全紅茶</h4><p>老派台南紅茶代表，建議 Day 1 買；公休就切備案。</p></article>
+          <article class="food-card"><div class="tag-row"><span class="pill blue">備案</span></div><h4>布萊恩紅茶 正興總店</h4><p>靠國華街、蝸牛巷；可點媲娘紅茶或觀音鮮奶茶。</p></article>
+          <article class="food-card"><div class="tag-row"><span class="pill green">坐下</span></div><h4>總裁點²頭 台南旗艦店</h4><p>友愛街一帶，想坐下休息時比純外帶更適合。</p></article>
+          <article class="food-card"><div class="tag-row"><span class="pill green">清爽</span></div><h4>小良田 南美店</h4><p>南美館 2 館後想喝綠豆沙牛奶、蜂蜜青檸茶可排。</p></article>
+          <article class="food-card"><div class="tag-row"><span class="pill pink">水果系</span></div><h4>王青水果茶飲 國華店</h4><p>想喝水果茶時可取代布萊恩或雙全，不建議三間都喝。</p></article>
+        </div>
+      </details>
+
+      <details>
+        <summary>Day 1 歇腳咖啡廳</summary>
+        <div class="details-body card-grid">
+          <article class="food-card"><h4>南美春室 The POOL</h4><p>南美館 2 館 5 樓，最順路；適合拍照、吹冷氣、補體力。</p></article>
+          <article class="food-card"><h4>褐 umber</h4><p>南美館二館 2 樓，不想跑遠時的館內休息選項。</p></article>
+          <article class="food-card"><h4>溫故知新咖啡館</h4><p>靠南美館一館，中庭花園旁，適合花園系休息點。</p></article>
+          <article class="food-card"><h4>秘氏咖啡 台南店</h4><p>老宅氛圍＋香港風格，適合國華街、蝸牛巷後坐一下。</p></article>
+          <article class="food-card"><h4>Present Coffee</h4><p>靠國華街、神農街一帶，適合傍晚轉場前休息。</p></article>
+          <article class="food-card"><h4>小巷裡的拾壹號</h4><p>巷弄老屋咖啡廳，適合悠閒老宅路線。</p></article>
+        </div>
+      </details>
+
+      <details>
+        <summary>Day 1 國華街美食參考</summary>
+        <div class="details-body card-grid">
+          <article class="food-card"><h4>金得春捲</h4><p>國華街經典小吃，適合下午點心。</p></article>
+          <article class="food-card"><h4>阿松割包</h4><p>老牌割包名店，口味傳統，適合多人分食。</p></article>
+          <article class="food-card"><h4>富盛號碗粿</h4><p>國華街／水仙宮一帶經典老店。</p></article>
+          <article class="food-card"><h4>一味品碗粿</h4><p>米其林必比登推薦，與富盛號二選一即可。</p></article>
+          <article class="food-card"><h4>邱家小卷米粉</h4><p>海味代表，湯頭鮮甜，適合想吃熱湯的人。</p></article>
+          <article class="food-card"><h4>好味紅燒土魠魚羹</h4><p>台南經典羹類小吃，適合分食一碗。</p></article>
+          <article class="food-card"><h4>炸雞洋行</h4><p>炸雞腿、炸雞翅，適合男生團補熱量。</p></article>
+          <article class="food-card"><h4>林家白糖粿</h4><p>台式甜點，鹹食後補一份甜的。</p></article>
+          <article class="food-card"><h4>亞米甜甜圈</h4><p>外型像炸雞腿的甜甜圈，適合拍照與分食。</p></article>
+          <article class="food-card"><h4>八寶彬圓仔惠</h4><p>米其林入選剉冰，天氣熱時的降溫點。</p></article>
+          <article class="food-card"><h4>修安扁擔豆花</h4><p>傳統豆花路線，清爽甜品。</p></article>
+          <article class="food-card"><h4>泰成水果店</h4><p>水果盤、哈密瓜瓜瓜冰，適合多人分食。</p></article>
+        </div>
+      </details>
+
+      <details>
+        <summary>Day 1 海安路／神農街續攤</summary>
+        <div class="details-body card-grid">
+          <article class="food-card"><h4>舞鶴燒烤舖 台南海安店</h4><p>尊王路、海安路口，離住宿近；燒烤、熱炒、炸物、酒類都有。</p></article>
+          <article class="food-card"><h4>梅鑫海產店</h4><p>台式熱炒海產路線，適合多人坐下吃一桌。</p></article>
+          <article class="food-card"><h4>沃隼釀造 WE Drink Beer Company</h4><p>想喝啤酒聊天，不想賭小酒吧座位時可選。</p></article>
+          <article class="food-card"><h4>Bark 露天茶飲酒吧 海安店</h4><p>輕鬆喝、聊天、續攤用。</p></article>
+          <article class="food-card"><h4>鐵厝燒烤 海安店</h4><p>串燒、炸物、熱炒路線，適合 casual 續攤。</p></article>
+          <article class="food-card"><h4>TAIKOO 太古百貨／太古 Bar</h4><p>神農街氣氛好，假日建議先問位。</p></article>
+          <article class="food-card"><h4>Bar T.C.R.C.</h4><p>經典調酒，多人假日不建議現場賭，有訂到再去。</p></article>
+        </div>
+      </details>
+    </section>
+
+    <section id="day2">
+      <article class="day-card">
+        <div class="day-header">
+          <span class="pill green">Day 2｜6/20（六）</span>
+          <h2>四草、安平、漁光島與花園夜市</h2>
+          <p>戶外比例偏高，要把補水、冰品、歇腳當成正式行程的一部分。</p>
+        </div>
+        <div class="timeline">
+          <div class="time-slot">上午</div>
+          <div class="plan-item"><h3>早起喝牛肉湯，前往四草綠色隧道</h3><p>早餐：<span class="highlight">文章牛肉湯或王氏魚皮</span>；四草竹筏建議先訂票。</p></div>
+          <div class="time-slot">下午</div>
+          <div class="plan-item"><h3>夕遊出張所、大魚的祝福拍照</h3><p>午餐：<span class="highlight">丹丹漢堡安平店</span>；下午茶：<span class="highlight">安平傳統豆花</span>。</p></div>
+          <div class="time-slot">傍晚</div>
+          <div class="plan-item"><h3>騎車過橋到漁光島看日落</h3><p>漁光島踏浪、拍剪影照；22:00 前預約 Day 3 收行李。</p></div>
+          <div class="time-slot">晚上</div>
+          <div class="plan-item"><h3>花園夜市</h3><p>必吃：<span class="highlight">二師兄滷味、麻辣鴨血</span>；6 人分食、玩夜市遊戲。</p></div>
+        </div>
+      </article>
+
+      <details open>
+        <summary>Day 2 飲料與歇腳</summary>
+        <div class="details-body card-grid">
+          <article class="food-card"><h4>義豐冬瓜茶 安平店</h4><p>安平老街附近，推薦冬瓜茶、冬瓜檸檬。</p></article>
+          <article class="food-card"><h4>南泉冰菓室</h4><p>安平午後吃冰休息，天氣很熱時像緊急救援站。</p></article>
+          <article class="food-card"><h4>清峰手搖飲</h4><p>安平在地型選項，適合純茶或清爽飲品。</p></article>
+          <article class="food-card"><h4>波哥創意茶飲 誠品安平店</h4><p>台南在地老牌，義豐排隊太長可改這間。</p></article>
+          <article class="food-card"><h4>汣禾家 果物美學 安平店</h4><p>想喝水果系、果茶系時可選。</p></article>
+          <article class="food-card"><h4>Stay Coffee 安平</h4><p>往安平樹屋／德記洋行路線順，適合安平行程休息。</p></article>
+        </div>
+      </details>
+
+      <details>
+        <summary>Day 2 花園夜市美食參考</summary>
+        <div class="details-body card-grid">
+          <article class="food-card"><h4>二師兄古早味滷味</h4><p>人氣排隊款，適合多人買一袋分食。</p></article>
+          <article class="food-card"><h4>陳大民麻辣鴨血</h4><p>重口味選項，可搭配炸物或飲料。</p></article>
+          <article class="food-card"><h4>統大碳烤香雞排</h4><p>大份量路線，適合 6 人分食。</p></article>
+          <article class="food-card"><h4>東東拔絲地瓜</h4><p>外脆內軟，中後段甜點。</p></article>
+          <article class="food-card"><h4>春粿面白糖粿</h4><p>比較有台南夜市感的復古甜點。</p></article>
+          <article class="food-card"><h4>延記臭豆腐／京典酵素臭豆腐</h4><p>想吃臭豆腐可擇一。</p></article>
+          <article class="food-card"><h4>石頭玉米／玉米杯杯</h4><p>邊走邊吃，也可當不想吃太油時的緩衝。</p></article>
+          <article class="food-card"><h4>董仔新疆孜然烤肉串</h4><p>適合多人分食，夜市氣氛感強。</p></article>
+          <article class="food-card"><h4>雅淳水果茶／龜龜毛毛泰國奶茶</h4><p>搭炸物、滷味比較解膩。</p></article>
+        </div>
+      </details>
+    </section>
+
+    <section id="day3">
+      <article class="day-card">
+        <div class="day-header">
+          <span class="pill pink">Day 3｜6/21（日）</span>
+          <h2>鹹粥、市場、奇美／十鼓與回程</h2>
+          <p>最後一天要保守抓時間：行李、還車、晚餐、高鐵都不要壓線。</p>
+        </div>
+        <div class="timeline">
+          <div class="time-slot">上午</div>
+          <div class="plan-item"><h3>阿堂鹹粥早午餐，接著逛鴨母寮市場</h3><p>推薦：綜合鹹粥、虱目魚肚、蝦仁飯；必買：<span class="highlight">鴨母寮市場阿婆布丁</span>；13:00 前留行李於民宿供車行回收。</p></div>
+          <div class="time-slot">下午</div>
+          <div class="plan-item"><h3>奇美博物館、十鼓仁糖園區</h3><p>拍照：奇美戶外歐洲花園；活動：十鼓極限設施、太鼓表演。兩者都吃時間，建議擇一主線。</p></div>
+          <div class="time-slot">晚上</div>
+          <div class="plan-item"><h3>回市區吃大餐，還車領行李後搭高鐵</h3><p>晚餐：<span class="highlight">小豪洲沙茶爐 17:30</span>；高鐵：<span class="highlight">20:48 台南站 0684 車次</span>。</p></div>
+        </div>
+      </article>
+
+      <details open>
+        <summary>Day 3 飲料與歇腳</summary>
+        <div class="details-body card-grid">
+          <article class="food-card"><h4>園區內飲品</h4><p>Day 3 偏園區，不建議為飲料額外繞路，以方便補水為主。</p></article>
+          <article class="food-card"><h4>深藍咖啡館 奇美博物館店</h4><p>奇美博物館內，適合看展中途休息，主打千層蛋糕與湖景視野。</p></article>
+          <article class="food-card"><h4>星巴克 奇美博物館門市</h4><p>不用大幅繞路，適合只想快速坐一下、喝咖啡。</p></article>
+          <article class="food-card"><h4>地果咖啡</h4><p>鄰近奇美博物館、十鼓一帶，適合景點間休息或晚餐前緩衝。</p></article>
+          <article class="food-card"><h4>車站附近簡單手搖</h4><p>搭車前口渴再買即可，不建議特地排名店。</p></article>
+        </div>
+      </details>
+    </section>
+
+    <section id="notes">
+      <div class="section-card">
+        <div class="section-title">
+          <h2>備註與執行提醒</h2>
+          <span class="pill">旅行 PM 防爆清單</span>
+        </div>
+        <div class="notice-list">
+          <article class="info-card">
+            <h3>Day 1</h3>
+            <ul>
+              <li>矮仔成＋鼎富發很順，但建議分食，避免下午戰力下降。</li>
+              <li>下午飲料只選 1 杯，不要變成手搖飲巡迴測試。</li>
+              <li>傍晚視體力決定咖啡廳休息或直接散步。</li>
+              <li>夜市以散步、遊戲、分食點心為主，不要當硬核正餐。</li>
+            </ul>
+          </article>
+          <article class="info-card">
+            <h3>Day 2</h3>
+            <ul>
+              <li>四草綠色隧道假日人潮可能較多，建議提早抵達。</li>
+              <li>安平午後戶外多，飲料／冰品偏清爽。</li>
+              <li>漁光島日落要預留停車與移動時間。</li>
+              <li>22:00 前記得預約 Day 3 收行李。</li>
+            </ul>
+          </article>
+          <article class="info-card">
+            <h3>Day 3</h3>
+            <ul>
+              <li>奇美與十鼓都很吃時間，建議一個主線，一個備案。</li>
+              <li>晚餐與還車時間抓保守，不要壓線。</li>
+              <li>13:00 前需留行李於民宿供車行回收，這件事要設提醒。</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Made for Tainan Trip 2026｜版本：HTML 靜態旅行控制台 v1.0</p>
+      <p><a href="#top">回到頂部</a></p>
+    </footer>
+  </main>
+</body>
+</html>
