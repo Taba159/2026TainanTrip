@@ -476,6 +476,23 @@
         border-radius: 18px;
       }
     }
+      .map-link {
+      color: var(--accent-dark);
+      font-weight: 850;
+      text-decoration: none;
+      border-bottom: 1px dotted rgba(146, 64, 14, 0.45);
+    }
+
+    .map-link:hover {
+      text-decoration: none;
+      border-bottom-style: solid;
+    }
+
+    .map-link::after {
+      content: " ↗";
+      font-size: 0.82em;
+      opacity: 0.65;
+    }
   </style>
 </head>
 <body>
@@ -775,5 +792,155 @@
       <p><a href="#top">回到頂部</a></p>
     </footer>
   </main>
+  <script>
+    // 店家名稱自動轉成 Google Maps 搜尋連結。
+    // 使用搜尋連結而非固定 Place ID，避免店家搬遷、分店調整或 Google Maps 資料更新造成失效。
+    const mapPlaces = [
+      "矮仔成蝦仁飯",
+      "鼎富發豬油拌飯",
+      "台南美術館 2 館",
+      "蝸牛巷",
+      "國華街",
+      "正興街",
+      "阿松割包",
+      "金得春捲",
+      "青山茶行",
+      "雙全紅茶",
+      "布萊恩紅茶 正興總店",
+      "布萊恩紅茶",
+      "海安路",
+      "河樂廣場",
+      "神農街",
+      "Present Coffee",
+      "秘氏咖啡 台南店",
+      "秘氏咖啡",
+      "大東夜市",
+      "大東東夜市",
+      "南興炒鱔魚",
+      "阿文豬心冬粉",
+      "總裁點²頭 台南旗艦店",
+      "小良田 南美店",
+      "王青水果茶飲 國華店",
+      "南美春室 The POOL",
+      "褐 umber",
+      "溫故知新咖啡館",
+      "小巷裡的拾壹號",
+      "富盛號碗粿",
+      "一味品碗粿",
+      "邱家小卷米粉",
+      "好味紅燒土魠魚羹",
+      "炸雞洋行",
+      "林家白糖粿",
+      "亞米甜甜圈",
+      "八寶彬圓仔惠",
+      "修安扁擔豆花",
+      "泰成水果店",
+      "阿川粉圓",
+      "舞鶴燒烤舖 台南海安店",
+      "梅鑫海產店",
+      "沃隼釀造 WE Drink Beer Company",
+      "Bark 露天茶飲酒吧 海安店",
+      "鐵厝燒烤 海安店",
+      "TAIKOO 太古百貨",
+      "太古 Bar",
+      "Bar T.C.R.C.",
+      "文章牛肉湯",
+      "王氏魚皮",
+      "四草綠色隧道",
+      "夕遊出張所",
+      "大魚的祝福",
+      "丹丹漢堡安平店",
+      "安平傳統豆花",
+      "漁光島",
+      "花園夜市",
+      "二師兄古早味滷味",
+      "二師兄滷味",
+      "麻辣鴨血",
+      "義豐冬瓜茶 安平店",
+      "清峰手搖飲",
+      "波哥創意茶飲 誠品安平店",
+      "南泉冰菓室",
+      "汣禾家 果物美學 安平店",
+      "Stay Coffee 安平",
+      "安平航海城",
+      "陳大民麻辣鴨血",
+      "統大碳烤香雞排",
+      "東東拔絲地瓜",
+      "春粿面白糖粿",
+      "延記臭豆腐",
+      "京典酵素臭豆腐",
+      "石頭玉米",
+      "玉米杯杯",
+      "董仔新疆孜然烤肉串",
+      "新加坡邋撒麵",
+      "雅淳水果茶",
+      "龜龜毛毛泰國奶茶",
+      "阿堂鹹粥",
+      "鴨母寮市場",
+      "鴨母寮市場阿婆布丁",
+      "奇美博物館",
+      "十鼓仁糖園區",
+      "小豪洲沙茶爐",
+      "深藍咖啡館 奇美博物館店",
+      "星巴克 奇美博物館門市",
+      "地果咖啡"
+    ];
+
+    const sortedPlaces = [...new Set(mapPlaces)].sort((a, b) => b.length - a.length);
+    const escapedPlaces = sortedPlaces.map((name) =>
+      name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    );
+    const placeRegex = new RegExp(`(${escapedPlaces.join("|")})`, "g");
+
+    function createMapLink(placeName) {
+      const link = document.createElement("a");
+      const query = `${placeName} 台南`;
+      link.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      link.className = "map-link";
+      link.textContent = placeName;
+      link.title = `在 Google Maps 搜尋：${query}`;
+      return link;
+    }
+
+    function linkifyTextNode(textNode) {
+      const text = textNode.nodeValue;
+      if (!placeRegex.test(text)) return;
+      placeRegex.lastIndex = 0;
+
+      const fragment = document.createDocumentFragment();
+      let lastIndex = 0;
+      let match;
+
+      while ((match = placeRegex.exec(text)) !== null) {
+        const before = text.slice(lastIndex, match.index);
+        if (before) fragment.appendChild(document.createTextNode(before));
+        fragment.appendChild(createMapLink(match[0]));
+        lastIndex = match.index + match[0].length;
+      }
+
+      const after = text.slice(lastIndex);
+      if (after) fragment.appendChild(document.createTextNode(after));
+      textNode.parentNode.replaceChild(fragment, textNode);
+    }
+
+    function shouldSkipNode(node) {
+      const parent = node.parentElement;
+      return !parent || parent.closest("a, script, style, textarea, input, button");
+    }
+
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (shouldSkipNode(node)) return NodeFilter.FILTER_REJECT;
+        if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    textNodes.forEach(linkifyTextNode);
+  </script>
 </body>
 </html>
