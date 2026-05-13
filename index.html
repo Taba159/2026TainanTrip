@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2026/6/19 台南行筆記</title>
+  <meta name="description" content="2026/6/19 起台南三天兩夜：高鐵與租機車、中西區與安平行程、店家 Google Maps 快速連結、飲料與執行提醒。和朋友一起跟著走的旅行控制台。" />
+  <!-- 若固定部署網址，請把 og:url／canonical（下方 id）改成同款絕對路徑，分享預覽較一致；程式會在 https 自動覆寫。 -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="2026/6/19 台南行筆記｜三天兩夜台南" />
+  <meta property="og:description" content="交通、住宿、每日行程、店家地圖連結與防爆提醒。手機與桌機都能當控台用。" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2026/6/19 台南行筆記" />
+  <meta name="twitter:description" content="三天兩夜台南行：行程、店家地圖連結與提醒。" />
+  <!-- 可選縮圖（建議約 1200×630 JPG/PNG）：<meta property="og:image" content="https://你的網域/share.jpg" /><meta property="og:image:alt" content="2026 台南行筆記" /> -->
+  <link id="canonical-link" rel="canonical" href="./" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Spline+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -37,7 +48,8 @@
     }
 
     html {
-      scroll-behavior: smooth;
+      /* 改用 auto：若瀏覽器裝了「平滑捲動／Scroll」類擴充，與 css smooth 疊在一起可能更頓 */
+      scroll-behavior: auto;
     }
 
     ::selection {
@@ -111,11 +123,54 @@
       overflow-x: hidden;
     }
 
+    .skip-link {
+      position: absolute;
+      left: 12px;
+      top: 0;
+      z-index: 10000;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      font-weight: 800;
+      color: var(--ink);
+      background: var(--paper);
+      border: 2px solid var(--accent-dark);
+      box-shadow: var(--shadow);
+      transform: translateY(-120%);
+      transition: transform 0.2s var(--ease-out-expo);
+    }
+
+    .skip-link:focus {
+      outline: none;
+    }
+
+    .skip-link:focus-visible {
+      transform: translateY(12px);
+      outline: 3px solid var(--blue);
+      outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .skip-link {
+        transition: none;
+      }
+    }
+
+    #main-content:focus {
+      outline: none;
+    }
+
+    #main-content:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+
     body::before {
       content: "";
       position: fixed;
       inset: -20%;
       z-index: -2;
+      will-change: transform;
       background:
         radial-gradient(ellipse 55% 45% at 15% 20%, rgba(251, 191, 36, 0.35), transparent 55%),
         radial-gradient(ellipse 50% 40% at 85% 12%, rgba(251, 113, 133, 0.2), transparent 50%),
@@ -132,8 +187,8 @@
       inset: 0;
       z-index: -1;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-      opacity: 0.45;
-      mix-blend-mode: multiply;
+      /* 不用 mix-blend-mode：全畫面混合在捲動／弱 GPU 時成本很高 */
+      opacity: 0.12;
       pointer-events: none;
     }
 
@@ -145,6 +200,11 @@
       .hero-decor span,
       h1 {
         animation: none !important;
+      }
+
+      body::before,
+      .hero {
+        will-change: auto;
       }
 
       .meta-card:hover,
@@ -172,6 +232,42 @@
       text-decoration: underline;
     }
 
+    a:focus {
+      outline: none;
+    }
+
+    a:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    .button:focus-visible,
+    .button.secondary:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 3px;
+    }
+
+    .nav a:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+      text-decoration: none;
+    }
+
+    .nav a.nav-is-active {
+      background: linear-gradient(135deg, #fff7ed, #fed7aa);
+      color: var(--accent-dark);
+      box-shadow: 0 8px 18px rgba(146, 64, 14, 0.12);
+    }
+
+    .nav a.nav-is-active:hover {
+      background: linear-gradient(135deg, #fffbeb, #fcd34d);
+    }
+
+    .nav a:focus-visible.nav-is-active {
+      outline-color: var(--blue);
+    }
+
     .page {
       max-width: var(--max);
       margin: 0 auto;
@@ -182,6 +278,7 @@
       position: relative;
       overflow: hidden;
       border-radius: var(--radius-xl);
+      will-change: background-position;
       background: linear-gradient(
         125deg,
         #fffdfb 0%,
@@ -386,8 +483,8 @@
     .info-card,
     .food-card {
       background: rgba(255, 255, 255, 0.76);
-      backdrop-filter: blur(14px) saturate(1.2);
-      -webkit-backdrop-filter: blur(14px) saturate(1.2);
+      backdrop-filter: blur(10px) saturate(1.15);
+      -webkit-backdrop-filter: blur(10px) saturate(1.15);
       border: 1px solid rgba(234, 220, 201, 0.85);
       border-radius: var(--radius-lg);
       box-shadow:
@@ -459,8 +556,8 @@
         0 10px 24px rgba(80, 48, 20, 0.08),
         0 0 40px rgba(251, 191, 36, 0.08),
         0 0 0 1px rgba(255, 255, 255, 0.65) inset;
-      backdrop-filter: blur(20px) saturate(1.25);
-      -webkit-backdrop-filter: blur(20px) saturate(1.25);
+      backdrop-filter: blur(12px) saturate(1.15);
+      -webkit-backdrop-filter: blur(12px) saturate(1.15);
     }
 
     .nav a {
@@ -486,6 +583,22 @@
     section {
       margin: 28px 0;
       scroll-margin-top: 92px;
+    }
+
+    section[id] {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 780px;
+    }
+
+    @media print {
+      body::before,
+      body::after {
+        display: none;
+      }
+
+      section[id] {
+        content-visibility: visible;
+      }
     }
 
     .section-card {
@@ -660,6 +773,13 @@
       color: #4a3420;
       background: linear-gradient(135deg, #fffaf3 0%, #fff2e6 100%);
       transition: filter 0.25s ease;
+      outline: none;
+    }
+
+    summary:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: var(--radius-md);
     }
 
     summary:hover {
@@ -820,6 +940,17 @@
       box-shadow: 0 0 0 4px rgba(254, 243, 199, 0.35);
     }
 
+    .map-link:focus {
+      outline: none;
+    }
+
+    .map-link:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 3px;
+      background: rgba(254, 243, 199, 0.45);
+    }
+
     .map-link::after {
       content: " ↗";
       font-size: 0.82em;
@@ -828,14 +959,15 @@
   </style>
 </head>
 <body>
-  <main class="page">
+  <a class="skip-link" href="#main-content">跳至主要內容</a>
+  <main id="main-content" class="page" tabindex="-1">
     <header class="hero" id="top">
       <div class="hero-decor" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="eyebrow">🍜 2026 夏日小旅行</div>
       <h1>2026/6/19 台南行筆記</h1>
       <p>三天兩夜、朋友同行、飲料與小吃密度偏高。這份版本把原本 Markdown 筆記整理成可以手機打開看的旅行控制台。</p>
       <div class="hero-actions">
-        <a class="button" href="https://maps.app.goo.gl/6GgBtw93kXtPXh2CA" target="_blank" rel="noreferrer">打開共用地圖</a>
+        <a class="button" href="https://maps.app.goo.gl/6GgBtw93kXtPXh2CA" target="_blank" rel="noopener noreferrer">打開共用地圖</a>
         <a class="button secondary" href="#day1">看 Day 1</a>
         <a class="button secondary" href="#notes">執行提醒</a>
       </div>
@@ -860,7 +992,7 @@
       </article>
     </div>
 
-    <nav class="nav" aria-label="頁面導覽">
+    <nav id="page-nav" class="nav" aria-label="頁面導覽">
       <a href="#transport">交通</a>
       <a href="#stay">住宿</a>
       <a href="#day1">Day 1</a>
@@ -910,7 +1042,7 @@
         <div class="two-col">
           <article class="info-card">
             <h3>Airbnb</h3>
-            <p><a href="https://www.airbnb.com/l/4uJKBN7o?s=67&unique_share_id=a61d89cd-4d3e-4c8d-a875-61c133b91706" target="_blank" rel="noreferrer">打開住宿連結</a></p>
+            <p><a href="https://www.airbnb.com/l/4uJKBN7o?s=67&unique_share_id=a61d89cd-4d3e-4c8d-a875-61c133b91706" target="_blank" rel="noopener noreferrer">打開住宿連結</a></p>
           </article>
           <article class="info-card">
             <h3>入住／退房</h3>
@@ -951,7 +1083,7 @@
         </div>
       </article>
 
-      <details open>
+      <details open aria-label="第一天補充：飲料與冰品清單，可摺疊閱讀">
         <summary>Day 1 飲料與冰品</summary>
         <div class="details-body card-grid">
           <article class="food-card"><div class="tag-row"><span class="pill blue">下午</span></div><h4>青山茶行</h4><p>南美館、國華街、正興街順路；推薦琥珀冰磚奶、琥珀檸檬。</p></article>
@@ -963,7 +1095,7 @@
         </div>
       </details>
 
-      <details>
+      <details aria-label="第一天補充：歇腳咖啡廳與休息點">
         <summary>Day 1 歇腳咖啡廳</summary>
         <div class="details-body card-grid">
           <article class="food-card"><h4>南美春室 The POOL</h4><p>南美館 2 館 5 樓，最順路；適合拍照、吹冷氣、補體力。</p></article>
@@ -975,7 +1107,7 @@
         </div>
       </details>
 
-      <details>
+      <details aria-label="第一天補充：國華街美食備選店家">
         <summary>Day 1 國華街美食參考</summary>
         <div class="details-body card-grid">
           <article class="food-card"><h4>金得春捲</h4><p>國華街經典小吃，適合下午點心。</p></article>
@@ -993,7 +1125,7 @@
         </div>
       </details>
 
-      <details>
+      <details aria-label="第一天補充：海安路與神農街傍晚續攤與酒吧">
         <summary>Day 1 海安路／神農街續攤</summary>
         <div class="details-body card-grid">
           <article class="food-card"><h4>舞鶴燒烤舖 台南海安店</h4><p>尊王路、海安路口，離住宿近；燒烤、熱炒、炸物、酒類都有。</p></article>
@@ -1026,7 +1158,7 @@
         </div>
       </article>
 
-      <details open>
+      <details open aria-label="第二天補充：飲料店與午後歇腳點">
         <summary>Day 2 飲料與歇腳</summary>
         <div class="details-body card-grid">
           <article class="food-card"><h4>義豐冬瓜茶 安平店</h4><p>安平老街附近，推薦冬瓜茶、冬瓜檸檬。</p></article>
@@ -1038,7 +1170,7 @@
         </div>
       </details>
 
-      <details>
+      <details aria-label="第二天補充：花園夜市美食備選店家">
         <summary>Day 2 花園夜市美食參考</summary>
         <div class="details-body card-grid">
           <article class="food-card"><h4>二師兄古早味滷味</h4><p>人氣排隊款，適合多人買一袋分食。</p></article>
@@ -1071,7 +1203,7 @@
         </div>
       </article>
 
-      <details open>
+      <details open aria-label="第三天補充：園區附近飲料與咖啡歇腳">
         <summary>Day 3 飲料與歇腳</summary>
         <div class="details-body card-grid">
           <article class="food-card"><h4>園區內飲品</h4><p>Day 3 偏園區，不建議為飲料額外繞路，以方便補水為主。</p></article>
@@ -1126,154 +1258,218 @@
     </footer>
   </main>
   <script>
-    // 店家名稱自動轉成 Google Maps 搜尋連結。
-    // 使用搜尋連結而非固定 Place ID，避免店家搬遷、分店調整或 Google Maps 資料更新造成失效。
-    const mapPlaces = [
-      "矮仔成蝦仁飯",
-      "鼎富發豬油拌飯",
-      "台南美術館 2 館",
-      "蝸牛巷",
-      "國華街",
-      "正興街",
-      "阿松割包",
-      "金得春捲",
-      "青山茶行",
-      "雙全紅茶",
-      "布萊恩紅茶 正興總店",
-      "布萊恩紅茶",
-      "海安路",
-      "河樂廣場",
-      "神農街",
-      "Present Coffee",
-      "秘氏咖啡 台南店",
-      "秘氏咖啡",
-      "大東夜市",
-      "大東東夜市",
-      "南興炒鱔魚",
-      "阿文豬心冬粉",
-      "總裁點²頭 台南旗艦店",
-      "小良田 南美店",
-      "王青水果茶飲 國華店",
-      "南美春室 The POOL",
-      "褐 umber",
-      "溫故知新咖啡館",
-      "小巷裡的拾壹號",
-      "富盛號碗粿",
-      "一味品碗粿",
-      "邱家小卷米粉",
-      "好味紅燒土魠魚羹",
-      "炸雞洋行",
-      "林家白糖粿",
-      "亞米甜甜圈",
-      "八寶彬圓仔惠",
-      "修安扁擔豆花",
-      "泰成水果店",
-      "阿川粉圓",
-      "舞鶴燒烤舖 台南海安店",
-      "梅鑫海產店",
-      "沃隼釀造 WE Drink Beer Company",
-      "Bark 露天茶飲酒吧 海安店",
-      "鐵厝燒烤 海安店",
-      "TAIKOO 太古百貨",
-      "太古 Bar",
-      "Bar T.C.R.C.",
-      "文章牛肉湯",
-      "王氏魚皮",
-      "四草綠色隧道",
-      "夕遊出張所",
-      "大魚的祝福",
-      "丹丹漢堡安平店",
-      "安平傳統豆花",
-      "漁光島",
-      "花園夜市",
-      "二師兄古早味滷味",
-      "二師兄滷味",
-      "麻辣鴨血",
-      "義豐冬瓜茶 安平店",
-      "清峰手搖飲",
-      "波哥創意茶飲 誠品安平店",
-      "南泉冰菓室",
-      "汣禾家 果物美學 安平店",
-      "Stay Coffee 安平",
-      "安平航海城",
-      "陳大民麻辣鴨血",
-      "統大碳烤香雞排",
-      "東東拔絲地瓜",
-      "春粿面白糖粿",
-      "延記臭豆腐",
-      "京典酵素臭豆腐",
-      "石頭玉米",
-      "玉米杯杯",
-      "董仔新疆孜然烤肉串",
-      "新加坡邋撒麵",
-      "雅淳水果茶",
-      "龜龜毛毛泰國奶茶",
-      "阿堂鹹粥",
-      "鴨母寮市場",
-      "鴨母寮市場阿婆布丁",
-      "奇美博物館",
-      "十鼓仁糖園區",
-      "小豪洲沙茶爐",
-      "深藍咖啡館 奇美博物館店",
-      "星巴克 奇美博物館門市",
-      "地果咖啡"
-    ];
+    (function syncCanonicalAndOgUrl() {
+      const link = document.getElementById("canonical-link");
+      if (!link || (location.protocol !== "http:" && location.protocol !== "https:")) return;
+      const u = new URL(location.href);
+      u.hash = "";
+      link.href = u.href;
+      let og = document.querySelector('meta[property="og:url"]');
+      if (!og) {
+        og = document.createElement("meta");
+        og.setAttribute("property", "og:url");
+        document.head.appendChild(og);
+      }
+      og.setAttribute("content", u.href);
+      let tu = document.querySelector('meta[name="twitter:url"]');
+      if (!tu) {
+        tu = document.createElement("meta");
+        tu.setAttribute("name", "twitter:url");
+        document.head.appendChild(tu);
+      }
+      tu.setAttribute("content", u.href);
+    })();
 
-    const sortedPlaces = [...new Set(mapPlaces)].sort((a, b) => b.length - a.length);
-    const escapedPlaces = sortedPlaces.map((name) =>
-      name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-    );
-    const placeRegex = new RegExp(`(${escapedPlaces.join("|")})`, "g");
+    (function initSkipToMain() {
+      const skip = document.querySelector(".skip-link");
+      const mainEl = document.getElementById("main-content");
+      if (!skip || !mainEl) return;
+      skip.addEventListener("click", (e) => {
+        e.preventDefault();
+        mainEl.focus({ preventScroll: true });
+        mainEl.scrollIntoView({ behavior: "auto", block: "start" });
+        history.replaceState(null, "", "#main-content");
+      });
+    })();
 
-    function createMapLink(placeName) {
-      const link = document.createElement("a");
-      const query = `${placeName} 台南`;
-      link.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
-      link.target = "_blank";
-      link.rel = "noreferrer";
-      link.className = "map-link";
-      link.textContent = placeName;
-      link.title = `在 Google Maps 搜尋：${query}`;
-      return link;
-    }
+    (function initSectionScrollSpy() {
+      const pageNav = document.getElementById("page-nav");
+      if (!pageNav) return;
+      const spyIds = ["transport", "stay", "day1", "day2", "day3", "notes"];
+      const links = Array.prototype.slice.call(pageNav.querySelectorAll('a[href^="#"]'));
 
-    function linkifyTextNode(textNode) {
-      const text = textNode.nodeValue;
-      if (!placeRegex.test(text)) return;
-      placeRegex.lastIndex = 0;
-
-      const fragment = document.createDocumentFragment();
-      let lastIndex = 0;
-      let match;
-
-      while ((match = placeRegex.exec(text)) !== null) {
-        const before = text.slice(lastIndex, match.index);
-        if (before) fragment.appendChild(document.createTextNode(before));
-        fragment.appendChild(createMapLink(match[0]));
-        lastIndex = match.index + match[0].length;
+      function setActive(id) {
+        links.forEach((a) => {
+          const hrefId = (a.getAttribute("href") || "").slice(1);
+          if (hrefId === id) {
+            a.classList.add("nav-is-active");
+            a.setAttribute("aria-current", "page");
+          } else {
+            a.classList.remove("nav-is-active");
+            a.removeAttribute("aria-current");
+          }
+        });
       }
 
-      const after = text.slice(lastIndex);
-      if (after) fragment.appendChild(document.createTextNode(after));
-      textNode.parentNode.replaceChild(fragment, textNode);
-    }
-
-    function shouldSkipNode(node) {
-      const parent = node.parentElement;
-      return !parent || parent.closest("a, script, style, textarea, input, button");
-    }
-
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
-      acceptNode(node) {
-        if (shouldSkipNode(node)) return NodeFilter.FILTER_REJECT;
-        if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-        return NodeFilter.FILTER_ACCEPT;
+      function updateSpy() {
+        /* 只用「nav 下方一條線」時，跳到 #day3 後區塊頂常仍在線之下，視窗上部仍落在 #day2 的 DOM 尾端，會誤亮 Day2。
+           改成取 nav 下方與畫面約 38% 高度中較低者為基準線，相當於以閱讀帶來判斷目前區塊。 */
+        const navBottom = pageNav.getBoundingClientRect().bottom;
+        const readingBand = Math.max(navBottom + 8, window.innerHeight * 0.38);
+        let activeId = spyIds[0];
+        spyIds.forEach((sid) => {
+          const el = document.getElementById(sid);
+          if (!el) return;
+          if (el.getBoundingClientRect().top <= readingBand) activeId = sid;
+        });
+        setActive(activeId);
       }
-    });
 
-    const textNodes = [];
-    while (walker.nextNode()) textNodes.push(walker.currentNode);
-    textNodes.forEach(linkifyTextNode);
+      let raf = 0;
+      function schedule() {
+        if (raf) return;
+        raf = window.requestAnimationFrame(() => {
+          raf = 0;
+          updateSpy();
+        });
+      }
+
+      window.addEventListener("scroll", schedule, { passive: true });
+      window.addEventListener("resize", schedule);
+      window.addEventListener("hashchange", schedule);
+      updateSpy();
+
+      links.forEach((a) => {
+        a.addEventListener("click", () => {
+          window.requestAnimationFrame(updateSpy);
+        });
+      });
+    })();
+
+    // 店家名稱 → Google Maps：詞條維護請改 places.json（勿手改下方邏輯）；需以 http(s) 伺服器開啟才能 fetch。
+    // 內文區塊若要禁止自動連結，請在父層加 data-no-map-link。
+    (async function linkifyPlacesFromJson() {
+      let config;
+      try {
+        const configUrl = new URL("places.json", document.baseURI || location.href).href;
+        const res = await fetch(configUrl, { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        config = await res.json();
+      } catch (err) {
+        console.warn(
+          "[places] 無法載入 places.json（若用 file:// 開檔，請改用 python3 -m http.server 等本機 http）：",
+          err
+        );
+        return;
+      }
+
+      const rawGroups = Array.isArray(config.groups) ? config.groups : [];
+      const flat = [];
+      for (const g of rawGroups) {
+        if (!g || !Array.isArray(g.names)) continue;
+        for (const n of g.names) {
+          if (typeof n !== "string") continue;
+          const t = n.trim();
+          if (t) flat.push(t);
+        }
+      }
+
+      const omit = new Set(
+        Array.isArray(config.omitFromLinkify)
+          ? config.omitFromLinkify
+              .filter((x) => typeof x === "string" && x.trim())
+              .map((x) => x.trim())
+          : []
+      );
+
+      const counts = new Map();
+      for (const n of flat) {
+        counts.set(n, (counts.get(n) || 0) + 1);
+      }
+      for (const [name, count] of counts) {
+        if (count > 1) {
+          console.warn(`[places] JSON 重複詞「${name}」出現 ${count} 次（已自動去重，建議刪冗餘條目）。`);
+        }
+      }
+
+      for (const o of omit) {
+        if (!counts.has(o)) {
+          console.info(
+            `[places] omitFromLinkify「${o}」未出現在任一 group（通常表示刻意阻擋泛指詞或未來預留，可視情況保留或刪除）。`
+          );
+        }
+      }
+
+      const mapPlaces = [...new Set(flat)].filter((n) => !omit.has(n));
+      for (const n of omit) {
+        if (counts.has(n)) console.info("[places] 已從 Regex 排除（omitFromLinkify）：", n);
+      }
+
+      const sortedPlaces = mapPlaces.sort((a, b) => b.length - a.length);
+      if (sortedPlaces.length === 0) {
+        console.warn("[places] 有效地名為 0，略過自動連結。");
+        return;
+      }
+
+      const escapedPlaces = sortedPlaces.map((name) =>
+        name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+      );
+      const placeRegex = new RegExp(`(${escapedPlaces.join("|")})`, "g");
+
+      function createMapLink(placeName) {
+        const link = document.createElement("a");
+        const query = `${placeName} 台南`;
+        link.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.className = "map-link";
+        link.textContent = placeName;
+        link.title = "在 Google Maps 搜尋：" + query;
+        link.setAttribute("aria-label", placeName + "，於台南以 Google Maps 搜尋（另開新分頁）");
+        return link;
+      }
+
+      function linkifyTextNode(textNode) {
+        const text = textNode.nodeValue;
+        if (!placeRegex.test(text)) return;
+        placeRegex.lastIndex = 0;
+
+        const fragment = document.createDocumentFragment();
+        let lastIndex = 0;
+        let match;
+
+        while ((match = placeRegex.exec(text)) !== null) {
+          const before = text.slice(lastIndex, match.index);
+          if (before) fragment.appendChild(document.createTextNode(before));
+          fragment.appendChild(createMapLink(match[0]));
+          lastIndex = match.index + match[0].length;
+        }
+
+        const after = text.slice(lastIndex);
+        if (after) fragment.appendChild(document.createTextNode(after));
+        textNode.parentNode.replaceChild(fragment, textNode);
+      }
+
+      function shouldSkipNode(node) {
+        const parent = node.parentElement;
+        return (
+          !parent ||
+          parent.closest("a, script, style, textarea, input, button, noscript, [data-no-map-link]")
+        );
+      }
+
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          if (shouldSkipNode(node)) return NodeFilter.FILTER_REJECT;
+          if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+
+      const textNodes = [];
+      while (walker.nextNode()) textNodes.push(walker.currentNode);
+      textNodes.forEach(linkifyTextNode);
+    })();
   </script>
 </body>
 </html>
