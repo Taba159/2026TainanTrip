@@ -1,3 +1,45 @@
+(function initThemeToggle() {
+  const root = document.documentElement;
+  const storageKey = "tainan-trip-theme";
+  const valid = new Set(["dawn", "night-market"]);
+
+  function apply(theme) {
+    if (!valid.has(theme)) {
+      theme = "dawn";
+    }
+    root.dataset.theme = theme;
+    try {
+      localStorage.setItem(storageKey, theme);
+    } catch (_) {
+      /* 私人模式等情境可能無法寫入 */
+    }
+    document.querySelectorAll("[data-theme-set]").forEach((btn) => {
+      const on = btn.getAttribute("data-theme-set") === theme;
+      btn.classList.toggle("is-active", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    const themeColorMeta = document.getElementById("meta-theme-color");
+    if (themeColorMeta) {
+      themeColorMeta.setAttribute("content", theme === "night-market" ? "#0f1419" : "#fff8ef");
+    }
+  }
+
+  let saved = null;
+  try {
+    saved = localStorage.getItem(storageKey);
+  } catch (_) {}
+  apply(valid.has(saved) ? saved : "dawn");
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target && e.target.closest("[data-theme-set]");
+    if (!btn) return;
+    const next = btn.getAttribute("data-theme-set");
+    if (valid.has(next)) {
+      apply(next);
+    }
+  });
+})();
+
 (function syncCanonicalAndOgUrl() {
   const link = document.getElementById("canonical-link");
   if (!link || (location.protocol !== "http:" && location.protocol !== "https:")) return;
@@ -18,6 +60,16 @@
     document.head.appendChild(tu);
   }
   tu.setAttribute("content", u.href);
+  const baseDir = new URL(".", u);
+  const ogImageAbs = new URL("icons/icon-512.png", baseDir).href;
+  let ogImg = document.querySelector('meta[property="og:image"]');
+  if (ogImg) {
+    ogImg.setAttribute("content", ogImageAbs);
+  }
+  let twImg = document.querySelector('meta[name="twitter:image"]');
+  if (twImg) {
+    twImg.setAttribute("content", ogImageAbs);
+  }
 })();
 
 (function initSkipToMain() {

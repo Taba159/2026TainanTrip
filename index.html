@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" data-theme="dawn">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,8 +13,16 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="2026/6/19 台南行筆記" />
   <meta name="twitter:description" content="三天兩夜台南行：行程、店家地圖連結與提醒。" />
-  <!-- 可選縮圖（建議約 1200×630 JPG/PNG）：<meta property="og:image" content="https://你的網域/share.jpg" /><meta property="og:image:alt" content="2026 台南行筆記" /> -->
+  <meta property="og:image" content="" />
+  <meta property="og:image:alt" content="2026 台南行筆記 icon" />
+  <meta name="twitter:image" content="" />
   <link id="canonical-link" rel="canonical" href="./" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" sizes="180x180" />
+  <meta id="meta-theme-color" name="theme-color" content="#fff8ef" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="台南行" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Spline+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -291,7 +299,7 @@
           <div class="time-slot">下午</div>
           <div class="plan-item"><h3>奇美博物館、十鼓仁糖園區</h3><p>拍照：奇美戶外歐洲花園；活動：十鼓極限設施、太鼓表演。兩者都吃時間，建議擇一主線。</p></div>
           <div class="time-slot">晚上</div>
-          <div class="plan-item"><h3>回市區吃大餐，還車領行李後搭高鐵</h3><p>晚餐：<span class="highlight">小豪洲沙茶爐 17:30</span>；高鐵：<span class="highlight">20:48 台南站 0684 車次</span>。</p></div>
+          <div class="plan-item"><h3>回市區吃大餐，還車領行李後搭高鐵</h3><p>晚餐：<span class="highlight">小豪洲沙茶爐 17:30</span>；高鐵：<span class="highlight">時間與車次待定</span>。</p></div>
         </div>
       </article>
 
@@ -345,6 +353,11 @@
     </section>
 
     <footer class="footer">
+      <div class="theme-toolbar" role="group" aria-label="頁面配色主題">
+        <span class="theme-toolbar-label">外觀</span>
+        <button type="button" class="theme-chip is-active" data-theme-set="dawn" aria-pressed="true">晨光</button>
+        <button type="button" class="theme-chip" data-theme-set="night-market" aria-pressed="false">夜巿</button>
+      </div>
       <p>Made for Tainan Trip 2026｜版本：HTML 靜態旅行控制台 v1.0</p>
       <p><a href="#top">回到頂部</a></p>
     </footer>
