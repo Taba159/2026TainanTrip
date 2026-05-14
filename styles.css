@@ -270,10 +270,10 @@ a:focus-visible {
   background-size: cover, cover;
   background-position: 22% center, center;
   background-repeat: no-repeat;
-  box-shadow: var(--shadow), 0 0 0 1px rgba(255, 255, 255, 0.55) inset, 0 0 80px rgba(251, 191, 36, 0.15);
+  box-shadow: var(--shadow);
   padding: 34px;
   margin-bottom: 22px;
-  border: 1px solid rgba(217, 119, 6, 0.22);
+  border: none;
 }
 
 .hero::before {
@@ -281,12 +281,12 @@ a:focus-visible {
   position: absolute;
   inset: -40%;
   background:
-    radial-gradient(circle at 22% 36%, rgba(255, 255, 255, 0.42), transparent 48%),
-    radial-gradient(circle at 88% 24%, rgba(251, 191, 36, 0.12), transparent 40%),
-    radial-gradient(circle at 58% 78%, rgba(244, 114, 182, 0.06), transparent 42%);
+    radial-gradient(circle at 22% 36%, rgba(255, 255, 255, 0.12), transparent 48%),
+    radial-gradient(circle at 88% 24%, rgba(251, 191, 36, 0.1), transparent 40%),
+    radial-gradient(circle at 58% 78%, rgba(244, 114, 182, 0.05), transparent 42%);
   pointer-events: none;
   animation: bg-drift 28s ease-in-out infinite reverse;
-  opacity: 0.55;
+  opacity: 0.45;
 }
 
 .hero-decor {
@@ -360,8 +360,8 @@ a:focus-visible {
   font-size: 14px;
   font-weight: 800;
   margin-bottom: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 10px 30px rgba(146, 64, 14, 0.1);
+  border: 1px solid rgba(234, 220, 201, 0.65);
+  box-shadow: 0 10px 30px rgba(146, 64, 14, 0.08);
   position: relative;
   z-index: 1;
 }
@@ -382,7 +382,6 @@ h1 {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: title-glow 5s ease-in-out infinite;
 }
 
 .hero p {
@@ -392,9 +391,7 @@ h1 {
   margin: 0 0 22px;
   position: relative;
   z-index: 1;
-  text-shadow:
-    0 0 20px rgba(255, 250, 245, 0.92),
-    0 1px 0 rgba(255, 255, 255, 0.75);
+  text-shadow: none;
 }
 
 .hero-actions {
@@ -1114,8 +1111,7 @@ html[data-theme="night-market"] .hero {
   background-size: cover, cover;
   background-position: 22% center, center;
   background-repeat: no-repeat;
-  border-color: rgba(94, 234, 212, 0.22);
-  box-shadow: var(--shadow), 0 0 0 1px rgba(255, 255, 255, 0.06) inset, 0 0 80px rgba(94, 234, 212, 0.06);
+  box-shadow: var(--shadow);
 }
 
 html[data-theme="night-market"] .hero::before {
@@ -1175,7 +1171,6 @@ html[data-theme="night-market"] h1 {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: title-glow-night 5s ease-in-out infinite;
 }
 
 html[data-theme="night-market"] .eyebrow {
