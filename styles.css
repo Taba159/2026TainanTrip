@@ -643,6 +643,61 @@ section[id] {
   gap: 16px;
 }
 
+.hsr-booking-reminder {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: linear-gradient(135deg, rgba(219, 234, 254, 0.35), rgba(255, 247, 237, 0.9));
+}
+
+.hsr-booking-reminder-title {
+  margin: 0 0 6px;
+  font-family: "Noto Serif TC", serif;
+  font-size: clamp(18px, 2.4vw, 22px);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.hsr-booking-reminder-spotlight {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border-left: 4px solid var(--blue);
+  background: var(--blue-soft);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.hsr-booking-reminder-spotlight strong {
+  font-weight: 800;
+  color: var(--blue);
+}
+
+.hsr-booking-reminder-lead {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #55483e;
+}
+
+.hsr-booking-reminder-actions {
+  margin: 0 0 12px;
+}
+
+.hsr-booking-reminder-extra {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #55483e;
+}
+
+.hsr-booking-reminder-extra-hint {
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .info-card {
   padding: 18px;
 }

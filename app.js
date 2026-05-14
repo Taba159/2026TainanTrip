@@ -43,7 +43,7 @@
       const hrefId = (a.getAttribute("href") || "").slice(1);
       if (hrefId === id) {
         a.classList.add("nav-is-active");
-        a.setAttribute("aria-current", "page");
+        a.setAttribute("aria-current", "true");
       } else {
         a.classList.remove("nav-is-active");
         a.removeAttribute("aria-current");
@@ -89,10 +89,12 @@
 // 店家名稱 → Google Maps：詞條維護請改 places.json（勿手改下方邏輯）；需以 http(s) 伺服器開啟才能 fetch。
 // 內文區塊若要禁止自動連結，請在父層加 data-no-map-link。
 (async function linkifyPlacesFromJson() {
+  /* 變更 places.json 內容時可遞增，讓瀏覽器略過舊的快取項目。 */
+  const placesJsonVersion = 1;
   let config;
   try {
-    const configUrl = new URL("places.json", document.baseURI || location.href).href;
-    const res = await fetch(configUrl, { cache: "no-store" });
+    const configUrl = new URL(`places.json?v=${placesJsonVersion}`, document.baseURI || location.href).href;
+    const res = await fetch(configUrl);
     if (!res.ok) throw new Error("HTTP " + res.status);
     config = await res.json();
   } catch (err) {

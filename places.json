@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "maintainerNote": "發佈前請用本機 http（例如 python -m http.server）開頁；看主控台 [places] 是否僅資訊層級。泛指易誤觸發的詞放 omitFromLinkify。內文若要禁止自動上地圖連結，請包在帶有 data-no-map-link 的父元素內。",
+    "maintainerNote": "發佈前請用本機 http（例如 python -m http.server）開頁；看主控台 [places] 是否僅資訊層級。泛指易誤觸發的詞放 omitFromLinkify。內文若要禁止自動上地圖連結，請包在帶有 data-no-map-link 的父元素內。變更詞條後請在 app.js 遞增 linkify 內的 placesJsonVersion，讓瀏覽器略過舊快取。",
     "matching": "執行時會合併各組、去重、排除 omit 後，再依字串長度由長到短組 Regex（最長詞優先）。"
   },
   "omitFromLinkify": [
@@ -122,6 +122,12 @@
         "深藍咖啡館 奇美博物館店",
         "星巴克 奇美博物館門市",
         "地果咖啡"
+      ]
+    },
+    {
+      "label": "交通｜租車",
+      "names": [
+        "詠心同行"
       ]
     }
   ]
