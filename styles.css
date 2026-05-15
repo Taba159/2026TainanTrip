@@ -692,6 +692,13 @@ section[id] {
   margin: 0 0 12px;
 }
 
+.hsr-booking-reminder-cal-links {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #55483e;
+}
+
 .hsr-booking-reminder-extra {
   margin: 0;
   font-size: 14px;
@@ -1280,7 +1287,8 @@ html[data-theme="night-market"] .info-card p,
 html[data-theme="night-market"] .info-card ul,
 html[data-theme="night-market"] .plan-item p,
 html[data-theme="night-market"] .hsr-booking-reminder-lead,
-html[data-theme="night-market"] .hsr-booking-reminder-extra {
+html[data-theme="night-market"] .hsr-booking-reminder-extra,
+html[data-theme="night-market"] .hsr-booking-reminder-cal-links {
   color: #b8b0a4;
 }
 

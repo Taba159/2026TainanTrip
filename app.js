@@ -40,6 +40,30 @@
   });
 })();
 
+(function initGoogleCalendarTripLink() {
+  function googleCalendarTripUrl() {
+    const text = "2026 台南三天兩夜（6/19～6/21）";
+    const dates = "20260619/20260622";
+    const details = [
+      "6/19（五）～6/21（日）台南行。詳見旅行筆記頁面。",
+      "高鐵訂票 https://irs.thsrc.com.tw/IMINT/",
+    ].join("\n");
+    const params = new URLSearchParams({
+      action: "TEMPLATE",
+      text,
+      dates,
+      details,
+      location: "台南市",
+    });
+    return "https://calendar.google.com/calendar/render?" + params.toString();
+  }
+
+  const gLink = document.getElementById("link-google-calendar-trip");
+  if (gLink) {
+    gLink.href = googleCalendarTripUrl();
+  }
+})();
+
 (function syncCanonicalAndOgUrl() {
   const link = document.getElementById("canonical-link");
   if (!link || (location.protocol !== "http:" && location.protocol !== "https:")) return;
