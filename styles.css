@@ -964,9 +964,9 @@ details[open] summary {
 
 .map-link {
   color: var(--accent-dark);
-  font-weight: 850;
+  font-weight: 750;
   text-decoration: none;
-  border-bottom: 1px dotted rgba(146, 64, 14, 0.45);
+  border-bottom: 2px solid var(--accent);
   transition:
     color 0.2s ease,
     border-bottom-color 0.2s ease,
@@ -977,9 +977,9 @@ details[open] summary {
 
 .ext-link {
   color: var(--accent-dark);
-  font-weight: 850;
+  font-weight: 750;
   text-decoration: none;
-  border-bottom: 1px dotted rgba(146, 64, 14, 0.45);
+  border-bottom: 2px solid var(--accent);
   transition:
     color 0.2s ease,
     border-bottom-color 0.2s ease,
@@ -988,150 +988,37 @@ details[open] summary {
   border-radius: 3px;
 }
 
-.link-badge {
-  display: inline-block;
-  margin-right: 5px;
-  padding: 1px 6px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-  vertical-align: middle;
-  border: 1px solid transparent;
-}
-
-.link-badge--map {
+.ext-link--map,
+.map-link {
   color: var(--blue);
-  background: var(--blue-soft);
-  border-color: rgba(3, 105, 161, 0.16);
+  border-bottom-color: var(--blue);
 }
 
-.link-badge--web {
+.ext-link--web {
   color: var(--accent-dark);
-  background: var(--accent-soft);
-  border-color: rgba(217, 119, 6, 0.18);
+  border-bottom-color: var(--accent);
 }
 
-.link-badge--tel {
+.ext-link--tel {
   color: var(--green);
-  background: var(--green-soft);
-  border-color: rgba(77, 124, 15, 0.18);
+  border-bottom-color: var(--green);
 }
 
-.link-badge--doc {
+.ext-link--doc {
   color: #7c3aed;
-  background: #ede9fe;
-  border-color: rgba(124, 58, 237, 0.16);
+  border-bottom-color: #7c3aed;
 }
 
-.link-badge--cal {
+.ext-link--cal {
   color: #0369a1;
-  background: #e0f2fe;
-  border-color: rgba(3, 105, 161, 0.16);
+  border-bottom-color: #0369a1;
 }
 
-.link-badge--inpage {
+.ext-link--inpage {
   color: #6b7280;
-  background: #f3f4f6;
-  border-color: rgba(107, 114, 128, 0.2);
-}
-
-.ext-link--map::before,
-.map-link::before {
-  content: "地圖";
-  display: inline-block;
-  margin-right: 5px;
-  padding: 1px 6px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-  vertical-align: middle;
-  color: var(--blue);
-  background: var(--blue-soft);
-  border: 1px solid rgba(3, 105, 161, 0.16);
-}
-
-.ext-link--web::before {
-  content: "官網";
-  display: inline-block;
-  margin-right: 5px;
-  padding: 1px 6px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-  vertical-align: middle;
-  color: var(--accent-dark);
-  background: var(--accent-soft);
-  border: 1px solid rgba(217, 119, 6, 0.18);
-}
-
-.ext-link--tel::before {
-  content: "電話";
-  display: inline-block;
-  margin-right: 5px;
-  padding: 1px 6px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-  vertical-align: middle;
-  color: var(--green);
-  background: var(--green-soft);
-  border: 1px solid rgba(77, 124, 15, 0.18);
-}
-
-.ext-link--doc::before {
-  content: "文件";
-  display: inline-block;
-  margin-right: 5px;
-  padding: 1px 6px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-  vertical-align: middle;
-  color: #7c3aed;
-  background: #ede9fe;
-  border: 1px solid rgba(124, 58, 237, 0.16);
-}
-
-.ext-link--cal::before {
-  content: "日曆";
-  display: inline-block;
-  margin-right: 5px;
-  padding: 1px 6px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-  vertical-align: middle;
-  color: #0369a1;
-  background: #e0f2fe;
-  border: 1px solid rgba(3, 105, 161, 0.16);
-}
-
-.ext-link--inpage::before {
-  content: "本頁";
-  display: inline-block;
-  margin-right: 5px;
-  padding: 1px 6px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-  vertical-align: middle;
-  color: #6b7280;
-  background: #f3f4f6;
-  border: 1px solid rgba(107, 114, 128, 0.2);
+  border-bottom-width: 1px;
+  border-bottom-style: dashed;
+  border-bottom-color: #9ca3af;
 }
 
 .map-link:hover,
@@ -1229,7 +1116,7 @@ details[open] summary {
 }
 
 .button .link-badge {
-  margin-right: 6px;
+  display: none;
 }
 
 /* --- 頁尾：主題切換 --- */
@@ -1626,9 +1513,33 @@ html[data-theme="night-market"] .transport-flow__body ul {
   color: #b8b0a4;
 }
 
-html[data-theme="night-market"] .link-badge--inpage,
-html[data-theme="night-market"] .ext-link--inpage::before {
-  color: #d1d5db;
-  background: rgba(55, 65, 81, 0.6);
-  border-color: rgba(156, 163, 175, 0.25);
+html[data-theme="night-market"] .ext-link--map,
+html[data-theme="night-market"] .map-link {
+  color: #7dd3fc;
+  border-bottom-color: #38bdf8;
+}
+
+html[data-theme="night-market"] .ext-link--web {
+  color: #fdba74;
+  border-bottom-color: #fb923c;
+}
+
+html[data-theme="night-market"] .ext-link--tel {
+  color: #86efac;
+  border-bottom-color: #4ade80;
+}
+
+html[data-theme="night-market"] .ext-link--doc {
+  color: #c4b5fd;
+  border-bottom-color: #a78bfa;
+}
+
+html[data-theme="night-market"] .ext-link--cal {
+  color: #7dd3fc;
+  border-bottom-color: #38bdf8;
+}
+
+html[data-theme="night-market"] .ext-link--inpage {
+  color: #9ca3af;
+  border-bottom-color: #6b7280;
 }
