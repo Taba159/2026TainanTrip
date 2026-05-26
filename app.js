@@ -40,6 +40,30 @@
   });
 })();
 
+(function initTripCountdown() {
+  const el = document.getElementById("trip-countdown");
+  if (!el) return;
+
+  const tripStart = new Date(2026, 5, 19);
+  const tripEnd = new Date(2026, 5, 22);
+  const today = new Date();
+  const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+  if (todayDate >= tripEnd) {
+    el.hidden = true;
+    return;
+  }
+
+  if (todayDate >= tripStart) {
+    el.hidden = true;
+    return;
+  }
+
+  const daysLeft = Math.round((tripStart - todayDate) / 86400000);
+  el.textContent = daysLeft === 0 ? "今天出發！" : `距出發還有 ${daysLeft} 天`;
+  el.hidden = false;
+})();
+
 (function initGoogleCalendarTripLink() {
   function googleCalendarTripUrl() {
     const text = "2026 台南三天兩夜（6/19～6/21）";
@@ -166,7 +190,7 @@
 // 內文區塊若要禁止自動連結，請在父層加 data-no-map-link。
 (async function linkifyPlacesFromJson() {
   /* 變更 places.json 內容時可遞增，讓瀏覽器略過舊的快取項目。 */
-  const placesJsonVersion = 1;
+  const placesJsonVersion = 2;
   let config;
   try {
     const configUrl = new URL(`places.json?v=${placesJsonVersion}`, document.baseURI || location.href).href;
@@ -240,7 +264,7 @@
     link.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
-    link.className = "map-link";
+    link.className = "ext-link ext-link--map map-link";
     link.textContent = placeName;
     link.title = "在 Google Maps 搜尋：" + query;
     link.setAttribute("aria-label", placeName + "，於台南以 Google Maps 搜尋（另開新分頁）");
