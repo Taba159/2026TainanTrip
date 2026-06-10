@@ -816,6 +816,10 @@ section[id] {
   color: #55483e;
 }
 
+.plan-item p + p {
+  margin-top: 8px;
+}
+
 .highlight {
   font-weight: 850;
   color: var(--accent-dark);
