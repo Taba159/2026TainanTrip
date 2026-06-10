@@ -785,13 +785,19 @@ section[id] {
 }
 
 .time-slot {
+  grid-column: 1;
   padding: 18px 22px;
   color: var(--accent-dark);
   font-weight: 900;
   border-right: 1px dashed var(--line);
 }
 
+.time-slot--span-2 {
+  grid-row: span 2;
+}
+
 .plan-item {
+  grid-column: 2;
   padding: 18px 22px;
   border-bottom: 1px solid rgba(234, 220, 201, 0.65);
 }
@@ -948,12 +954,18 @@ details[open] summary {
   }
 
   .time-slot {
+    grid-column: auto;
     border-right: 0;
     border-bottom: 1px dashed var(--line);
     padding-bottom: 8px;
   }
 
+  .time-slot--span-2 {
+    grid-row: auto;
+  }
+
   .plan-item {
+    grid-column: auto;
     padding-top: 10px;
   }
 

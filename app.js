@@ -190,7 +190,7 @@
 // 內文區塊若要禁止自動連結，請在父層加 data-no-map-link。
 (async function linkifyPlacesFromJson() {
   /* 變更 places.json 內容時可遞增，讓瀏覽器略過舊的快取項目。 */
-  const placesJsonVersion = 2;
+  const placesJsonVersion = 5;
   let config;
   try {
     const configUrl = new URL(`places.json?v=${placesJsonVersion}`, document.baseURI || location.href).href;
