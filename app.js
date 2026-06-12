@@ -135,7 +135,7 @@
 (function initSectionScrollSpy() {
   const pageNav = document.getElementById("page-nav");
   if (!pageNav) return;
-  const spyIds = ["transport", "stay", "day1", "day2", "day3", "notes"];
+  const spyIds = ["weather", "transport", "stay", "day1", "day2", "day3", "notes"];
   const links = Array.prototype.slice.call(pageNav.querySelectorAll('a[href^="#"]'));
 
   function setActive(id) {
@@ -156,10 +156,14 @@
        改成取 nav 下方與畫面約 38% 高度中較低者為基準線，相當於以閱讀帶來判斷目前區塊。 */
     const navBottom = pageNav.getBoundingClientRect().bottom;
     const readingBand = Math.max(navBottom + 8, window.innerHeight * 0.38);
-    let activeId = spyIds[0];
+    let activeId =
+      spyIds.find((sid) => {
+        const el = document.getElementById(sid);
+        return el && !el.hidden;
+      }) || spyIds[0];
     spyIds.forEach((sid) => {
       const el = document.getElementById(sid);
-      if (!el) return;
+      if (!el || el.hidden) return;
       if (el.getBoundingClientRect().top <= readingBand) activeId = sid;
     });
     setActive(activeId);
@@ -184,6 +188,303 @@
       window.requestAnimationFrame(updateSpy);
     });
   });
+})();
+
+(function initWeather() {
+  const section = document.getElementById("weather");
+  const navLink = document.getElementById("nav-weather");
+  if (!section) return;
+
+  const TRIP_START = new Date(2026, 5, 19);
+  const TRIP_END = new Date(2026, 5, 22);
+  const TRIP_DATES = ["2026-06-19", "2026-06-20", "2026-06-21"];
+  const DAY_LABELS = ["6/19（五）", "6/20（六）", "6/21（日）"];
+  const LAT = 22.9997;
+  const LON = 120.2270;
+  const CACHE_KEY = "tainan-trip-weather";
+  const CACHE_TTL_MS = 30 * 60 * 1000;
+
+  const metaEl = document.getElementById("weather-meta");
+  const gridEl = document.getElementById("weather-grid");
+  const tipsEl = document.getElementById("weather-tips");
+  const errorEl = document.getElementById("weather-error");
+
+  function todayDateOnly() {
+    const t = new Date();
+    return new Date(t.getFullYear(), t.getMonth(), t.getDate());
+  }
+
+  function todayIso() {
+    const t = todayDateOnly();
+    const y = t.getFullYear();
+    const m = String(t.getMonth() + 1).padStart(2, "0");
+    const d = String(t.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+
+  function hideWeatherSection() {
+    section.hidden = true;
+    if (navLink) {
+      navLink.hidden = true;
+    }
+  }
+
+  if (todayDateOnly() >= TRIP_END) {
+    hideWeatherSection();
+    return;
+  }
+
+  function weatherCodeInfo(code) {
+    const n = Number(code);
+    if (n === 0) {
+      return { label: "晴朗", icon: "☀️" };
+    }
+    if (n === 1) {
+      return { label: "大致晴朗", icon: "🌤️" };
+    }
+    if (n === 2) {
+      return { label: "多雲時晴", icon: "⛅" };
+    }
+    if (n === 3) {
+      return { label: "多雲", icon: "☁️" };
+    }
+    if (n === 45 || n === 48) {
+      return { label: "霧", icon: "🌫️" };
+    }
+    if (n >= 51 && n <= 57) {
+      return { label: "毛毛雨", icon: "🌦️" };
+    }
+    if (n >= 61 && n <= 67) {
+      return { label: "降雨", icon: "🌧️" };
+    }
+    if (n >= 71 && n <= 77) {
+      return { label: "降雪", icon: "❄️" };
+    }
+    if (n >= 80 && n <= 82) {
+      return { label: "陣雨", icon: "🌦️" };
+    }
+    if (n >= 85 && n <= 86) {
+      return { label: "陣雪", icon: "🌨️" };
+    }
+    if (n === 95) {
+      return { label: "雷雨", icon: "⛈️" };
+    }
+    if (n === 96 || n === 99) {
+      return { label: "雷雨冰雹", icon: "⛈️" };
+    }
+    return { label: "多雲", icon: "⛅" };
+  }
+
+  function readCache() {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed || !parsed.data || !parsed.fetchedAt) return null;
+      return parsed;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function writeCache(data) {
+    try {
+      localStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify({ fetchedAt: Date.now(), data })
+      );
+    } catch (_) {
+      /* 私人模式等情境可能無法寫入 */
+    }
+  }
+
+  function isCacheFresh(entry) {
+    return entry && Date.now() - entry.fetchedAt < CACHE_TTL_MS;
+  }
+
+  async function fetchForecast() {
+    const params = new URLSearchParams({
+      latitude: String(LAT),
+      longitude: String(LON),
+      daily:
+        "temperature_2m_max,temperature_2m_min,apparent_temperature_max,precipitation_probability_max,weathercode",
+      timezone: "Asia/Taipei",
+      start_date: TRIP_DATES[0],
+      end_date: TRIP_DATES[TRIP_DATES.length - 1],
+    });
+    const url = `https://api.open-meteo.com/v1/forecast?${params}`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error("HTTP " + res.status);
+    }
+    return res.json();
+  }
+
+  function buildWeatherTips(daily) {
+    const tips = [];
+    const day2Rain = daily.precipitation_probability_max[1];
+    const day2Temp = daily.temperature_2m_max[1];
+    const maxRain = Math.max(...daily.precipitation_probability_max);
+    const maxTemp = Math.max(...daily.temperature_2m_max);
+
+    if (day2Rain >= 50) {
+      tips.push(
+        "Day 2 戶外多：6/20 降雨機率偏高，四草／安平建議帶輕便雨具，竹筏留意現場公告。"
+      );
+    }
+
+    if (maxTemp >= 32) {
+      tips.push(
+        "氣溫偏高：補水與冰品當正式行程，八寶彬圓仔惠、南泉冰菓室可列入備案。"
+      );
+    } else if (day2Temp >= 30 && day2Rain < 50) {
+      tips.push("Day 2 安平午後戶外多，飲料偏清爽，義豐冬瓜茶或手搖可提早補水。");
+    }
+
+    if (tips.length < 2 && maxRain < 40) {
+      tips.push("降雨機率整體偏低，防曬與帽子仍建議列入行李。");
+    }
+
+    return tips.slice(0, 2);
+  }
+
+  function formatUpdatedAt(fetchedAt, stale) {
+    const time = new Date(fetchedAt).toLocaleTimeString("zh-TW", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+    const staleNote = stale ? "（資料可能不是最新）" : "";
+    return `更新於 ${time} · 台南市中西區${staleNote}`;
+  }
+
+  function renderWeatherCards(daily, fetchedAt, stale) {
+    if (!gridEl) return;
+
+    gridEl.setAttribute("aria-busy", "false");
+    gridEl.innerHTML = "";
+
+    const today = todayIso();
+    const onTrip = todayDateOnly() >= TRIP_START && todayDateOnly() < TRIP_END;
+
+    TRIP_DATES.forEach((date, i) => {
+      const info = weatherCodeInfo(daily.weathercode[i]);
+      const tempMax = Math.round(daily.temperature_2m_max[i]);
+      const tempMin = Math.round(daily.temperature_2m_min[i]);
+      const feels = Math.round(daily.apparent_temperature_max[i]);
+      const rain = daily.precipitation_probability_max[i];
+
+      const card = document.createElement("article");
+      card.className = "weather-day";
+      if (onTrip && date === today) {
+        card.classList.add("weather-day--today");
+      } else if (onTrip && date !== today) {
+        card.classList.add("weather-day--muted");
+      }
+
+      const dateEl = document.createElement("div");
+      dateEl.className = "weather-day__date";
+      dateEl.textContent = DAY_LABELS[i];
+
+      const tempRow = document.createElement("div");
+      tempRow.className = "weather-day__temp-row";
+      const iconEl = document.createElement("span");
+      iconEl.className = "weather-day__icon";
+      iconEl.setAttribute("aria-hidden", "true");
+      iconEl.textContent = info.icon;
+      const tempEl = document.createElement("span");
+      tempEl.className = "weather-day__temp";
+      tempEl.textContent = `${tempMax}°`;
+      tempRow.append(iconEl, tempEl);
+
+      const descEl = document.createElement("p");
+      descEl.className = "weather-desc";
+      descEl.textContent = info.label;
+
+      const rangeEl = document.createElement("p");
+      rangeEl.className = "weather-day__range";
+      rangeEl.textContent = `${tempMin}°～${tempMax}°`;
+
+      const rainEl = document.createElement("p");
+      rainEl.className = "weather-day__rain";
+      rainEl.textContent = `降雨 ${rain}%`;
+
+      const feelsEl = document.createElement("p");
+      feelsEl.className = "weather-day__feels";
+      feelsEl.textContent = `體感 ${feels}°`;
+
+      card.append(dateEl, tempRow, descEl, rangeEl, rainEl, feelsEl);
+      gridEl.appendChild(card);
+    });
+
+    if (metaEl) {
+      metaEl.textContent = formatUpdatedAt(fetchedAt, stale);
+    }
+  }
+
+  function renderTips(daily) {
+    if (!tipsEl) return;
+    const tips = buildWeatherTips(daily);
+    tipsEl.innerHTML = "";
+    if (tips.length === 0) {
+      tipsEl.hidden = true;
+      return;
+    }
+    tips.forEach((text) => {
+      const li = document.createElement("li");
+      li.textContent = text;
+      tipsEl.appendChild(li);
+    });
+    tipsEl.hidden = false;
+  }
+
+  function showError(message) {
+    if (errorEl) {
+      errorEl.textContent = message;
+      errorEl.hidden = false;
+    }
+    if (gridEl) {
+      gridEl.setAttribute("aria-busy", "false");
+    }
+  }
+
+  async function loadWeather() {
+    const cached = readCache();
+    if (cached && isCacheFresh(cached)) {
+      renderWeatherCards(cached.data.daily, cached.fetchedAt, false);
+      renderTips(cached.data.daily);
+      return;
+    }
+
+    try {
+      const data = await fetchForecast();
+      const fetchedAt = Date.now();
+      writeCache(data);
+      if (errorEl) {
+        errorEl.hidden = true;
+      }
+      renderWeatherCards(data.daily, fetchedAt, false);
+      renderTips(data.daily);
+    } catch (err) {
+      console.warn("[weather] 無法取得預報：", err);
+      if (cached && cached.data && cached.data.daily) {
+        renderWeatherCards(cached.data.daily, cached.fetchedAt, true);
+        renderTips(cached.data.daily);
+        showError("目前無法更新天氣，已顯示上次快取資料。");
+      } else {
+        showError("天氣資料暫時無法載入，請稍後再試。");
+        if (metaEl) {
+          metaEl.textContent = "台南市中西區";
+        }
+        if (gridEl) {
+          gridEl.innerHTML = "";
+          gridEl.setAttribute("aria-busy", "false");
+        }
+      }
+    }
+  }
+
+  loadWeather();
 })();
 
 // 店家名稱 → Google Maps：詞條維護請改 places.json（勿手改下方邏輯）；需以 http(s) 伺服器開啟才能 fetch。

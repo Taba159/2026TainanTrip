@@ -900,6 +900,151 @@ details[open] summary {
   padding-left: 20px;
 }
 
+.weather-card {
+  margin-bottom: 18px;
+}
+
+.weather-meta {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.weather-day {
+  padding: 16px;
+  border-radius: var(--radius-md, 16px);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.weather-day--today {
+  border-color: rgba(217, 119, 6, 0.45);
+  background: linear-gradient(135deg, rgba(254, 243, 199, 0.65), rgba(255, 255, 255, 0.75));
+  box-shadow: 0 8px 22px rgba(217, 119, 6, 0.1);
+}
+
+.weather-day--muted {
+  opacity: 0.72;
+}
+
+.weather-day__date {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.weather-day__temp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.weather-day__icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.weather-day__temp {
+  font-size: clamp(26px, 4vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.weather-desc {
+  margin: 0 0 6px;
+  font-weight: 650;
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.weather-day__range,
+.weather-day__rain,
+.weather-day__feels {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.weather-tips {
+  margin: 0;
+  padding: 14px 16px 14px 36px;
+  border-radius: var(--radius-md, 16px);
+  border: 1px solid rgba(77, 124, 15, 0.2);
+  background: var(--green-soft);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.weather-tips li + li {
+  margin-top: 8px;
+}
+
+.weather-error {
+  margin: 12px 0 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--accent-dark);
+  background: rgba(254, 243, 199, 0.85);
+  border: 1px solid rgba(217, 119, 6, 0.25);
+}
+
+.weather-day--skeleton {
+  min-height: 148px;
+  background: rgba(255, 255, 255, 0.4);
+  overflow: hidden;
+}
+
+.weather-skeleton-line {
+  height: 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.06) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.06) 100%
+  );
+  background-size: 200% 100%;
+  animation: weather-shimmer 1.4s ease-in-out infinite;
+}
+
+.weather-skeleton-line--short {
+  width: 45%;
+}
+
+.weather-skeleton-line--tall {
+  height: 32px;
+  width: 55%;
+  margin-bottom: 14px;
+}
+
+@keyframes weather-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+#weather[hidden],
+#nav-weather[hidden] {
+  display: none !important;
+}
+
 .footer {
   text-align: center;
   color: var(--muted);
@@ -929,7 +1074,8 @@ details[open] summary {
   .meta-grid,
   .three-col,
   .notice-list,
-  .card-grid {
+  .card-grid,
+  .weather-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -949,7 +1095,8 @@ details[open] summary {
   .two-col,
   .three-col,
   .notice-list,
-  .card-grid {
+  .card-grid,
+  .weather-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1558,4 +1705,54 @@ html[data-theme="night-market"] .ext-link--cal {
 html[data-theme="night-market"] .ext-link--inpage {
   color: #9ca3af;
   border-bottom-color: #6b7280;
+}
+
+html[data-theme="night-market"] .weather-day {
+  background: rgba(22, 30, 42, 0.88);
+  border-color: rgba(94, 234, 212, 0.14);
+}
+
+html[data-theme="night-market"] .weather-day--today {
+  border-color: rgba(251, 146, 60, 0.45);
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.14), rgba(22, 30, 42, 0.92));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="night-market"] .weather-day__temp,
+html[data-theme="night-market"] .weather-desc {
+  color: var(--ink);
+}
+
+html[data-theme="night-market"] .weather-day__date,
+html[data-theme="night-market"] .weather-day__range,
+html[data-theme="night-market"] .weather-day__rain,
+html[data-theme="night-market"] .weather-day__feels,
+html[data-theme="night-market"] .weather-meta {
+  color: #b8b0a4;
+}
+
+html[data-theme="night-market"] .weather-tips {
+  background: rgba(77, 124, 15, 0.12);
+  border-color: rgba(163, 230, 53, 0.22);
+  color: #e8e2d8;
+}
+
+html[data-theme="night-market"] .weather-error {
+  color: #fde68a;
+  background: rgba(251, 146, 60, 0.12);
+  border-color: rgba(251, 146, 60, 0.3);
+}
+
+html[data-theme="night-market"] .weather-day--skeleton {
+  background: rgba(22, 30, 42, 0.6);
+}
+
+html[data-theme="night-market"] .weather-skeleton-line {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
 }

@@ -63,7 +63,40 @@
       </article>
     </div>
 
+    <section id="weather" data-no-map-link>
+      <div class="section-card weather-card">
+        <div class="section-title">
+          <h2>天氣</h2>
+          <span class="pill green">即時預報</span>
+        </div>
+        <p id="weather-meta" class="weather-meta">載入中…</p>
+        <div id="weather-grid" class="weather-grid" aria-busy="true" aria-label="行程三日天氣預報">
+          <article class="weather-day weather-day--skeleton" aria-hidden="true">
+            <div class="weather-skeleton-line weather-skeleton-line--short"></div>
+            <div class="weather-skeleton-line weather-skeleton-line--tall"></div>
+            <div class="weather-skeleton-line"></div>
+            <div class="weather-skeleton-line"></div>
+          </article>
+          <article class="weather-day weather-day--skeleton" aria-hidden="true">
+            <div class="weather-skeleton-line weather-skeleton-line--short"></div>
+            <div class="weather-skeleton-line weather-skeleton-line--tall"></div>
+            <div class="weather-skeleton-line"></div>
+            <div class="weather-skeleton-line"></div>
+          </article>
+          <article class="weather-day weather-day--skeleton" aria-hidden="true">
+            <div class="weather-skeleton-line weather-skeleton-line--short"></div>
+            <div class="weather-skeleton-line weather-skeleton-line--tall"></div>
+            <div class="weather-skeleton-line"></div>
+            <div class="weather-skeleton-line"></div>
+          </article>
+        </div>
+        <ul id="weather-tips" class="weather-tips" aria-live="polite" hidden></ul>
+        <p id="weather-error" class="weather-error" hidden role="status"></p>
+      </div>
+    </section>
+
     <nav id="page-nav" class="nav" aria-label="頁面導覽">
+      <a href="#weather" id="nav-weather">天氣</a>
       <a href="#transport">交通</a>
       <a href="#stay">住宿</a>
       <a href="#day1">Day 1</a>
