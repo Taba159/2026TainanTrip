@@ -201,8 +201,10 @@
   const DAY_LABELS = ["6/19（五）", "6/20（六）", "6/21（日）"];
   const LAT = 22.9997;
   const LON = 120.2270;
-  const CACHE_KEY = "tainan-trip-weather";
+  const CACHE_KEY = "tainan-trip-weather-v2";
   const CACHE_TTL_MS = 30 * 60 * 1000;
+  const HOURLY_START = 8;
+  const HOURLY_END = 21;
 
   const metaEl = document.getElementById("weather-meta");
   const gridEl = document.getElementById("weather-grid");
@@ -308,6 +310,7 @@
       longitude: String(LON),
       daily:
         "temperature_2m_max,temperature_2m_min,apparent_temperature_max,precipitation_probability_max,weathercode",
+      hourly: "temperature_2m,apparent_temperature,precipitation_probability,weathercode",
       timezone: "Asia/Taipei",
       start_date: TRIP_DATES[0],
       end_date: TRIP_DATES[TRIP_DATES.length - 1],
@@ -358,7 +361,113 @@
     return `更新於 ${time} · 台南市中西區${staleNote}`;
   }
 
-  function renderWeatherCards(daily, fetchedAt, stale) {
+  function currentHour() {
+    return new Date().getHours();
+  }
+
+  function getHourlySlotsForDate(hourly, dateIso) {
+    if (!hourly || !Array.isArray(hourly.time)) {
+      return [];
+    }
+
+    const slots = [];
+    for (let i = 0; i < hourly.time.length; i++) {
+      const stamp = hourly.time[i];
+      if (!stamp.startsWith(dateIso)) {
+        continue;
+      }
+      const hour = Number(stamp.slice(11, 13));
+      if (hour < HOURLY_START || hour > HOURLY_END) {
+        continue;
+      }
+      slots.push({
+        hour,
+        timeLabel: `${String(hour).padStart(2, "0")}:00`,
+        temp: Math.round(hourly.temperature_2m[i]),
+        feels: Math.round(hourly.apparent_temperature[i]),
+        rain: hourly.precipitation_probability[i],
+        code: hourly.weathercode[i],
+      });
+    }
+    return slots;
+  }
+
+  function createHourlyDetails(dateIso, hourly, isToday, onTrip) {
+    const slots = getHourlySlotsForDate(hourly, dateIso);
+    if (slots.length === 0) {
+      return null;
+    }
+
+    const details = document.createElement("details");
+    details.className = "weather-hourly";
+    if (onTrip && isToday) {
+      details.open = true;
+    }
+
+    const summary = document.createElement("summary");
+    summary.textContent = onTrip && isToday ? "今日逐時預報" : "查看逐時預報";
+
+    const scroll = document.createElement("div");
+    scroll.className = "weather-hourly-scroll";
+    scroll.setAttribute("role", "list");
+    scroll.setAttribute("aria-label", onTrip && isToday ? "今日逐時預報" : "逐時預報");
+
+    const nowHour = currentHour();
+    const todayIsTripDay = todayIso() === dateIso;
+
+    slots.forEach((slot) => {
+      const info = weatherCodeInfo(slot.code);
+      const item = document.createElement("div");
+      item.className = "weather-hourly-slot";
+      item.setAttribute("role", "listitem");
+      if (todayIsTripDay && slot.hour === nowHour) {
+        item.classList.add("weather-hourly-slot--now");
+      } else if (todayIsTripDay && slot.hour < nowHour) {
+        item.classList.add("weather-hourly-slot--past");
+      }
+
+      const timeEl = document.createElement("div");
+      timeEl.className = "weather-hourly-slot__time";
+      timeEl.textContent = slot.timeLabel;
+
+      const iconEl = document.createElement("div");
+      iconEl.className = "weather-hourly-slot__icon";
+      iconEl.setAttribute("aria-hidden", "true");
+      iconEl.textContent = info.icon;
+
+      const tempEl = document.createElement("div");
+      tempEl.className = "weather-hourly-slot__temp";
+      tempEl.textContent = `${slot.temp}°`;
+
+      const rainEl = document.createElement("div");
+      rainEl.className = "weather-hourly-slot__rain";
+      rainEl.textContent = `${slot.rain}%`;
+
+      const descEl = document.createElement("div");
+      descEl.className = "weather-hourly-slot__desc";
+      descEl.textContent = info.label;
+
+      item.append(timeEl, iconEl, tempEl, rainEl, descEl);
+      scroll.appendChild(item);
+    });
+
+    details.append(summary, scroll);
+
+    if (onTrip && isToday) {
+      requestAnimationFrame(() => {
+        const nowSlot = scroll.querySelector(".weather-hourly-slot--now");
+        if (nowSlot) {
+          nowSlot.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+        }
+      });
+    }
+
+    return details;
+  }
+
+  function renderWeatherCards(data, fetchedAt, stale) {
+    const daily = data.daily;
+    const hourly = data.hourly;
     if (!gridEl) return;
 
     gridEl.setAttribute("aria-busy", "false");
@@ -414,6 +523,14 @@
       feelsEl.textContent = `體感 ${feels}°`;
 
       card.append(dateEl, tempRow, descEl, rangeEl, rainEl, feelsEl);
+
+      const isToday = date === today;
+      const hourlyDetails = createHourlyDetails(date, hourly, isToday, onTrip);
+      if (hourlyDetails) {
+        card.appendChild(hourlyDetails);
+        card.classList.add("weather-day--has-hourly");
+      }
+
       gridEl.appendChild(card);
     });
 
@@ -451,7 +568,7 @@
   async function loadWeather() {
     const cached = readCache();
     if (cached && isCacheFresh(cached)) {
-      renderWeatherCards(cached.data.daily, cached.fetchedAt, false);
+      renderWeatherCards(cached.data, cached.fetchedAt, false);
       renderTips(cached.data.daily);
       return;
     }
@@ -463,12 +580,12 @@
       if (errorEl) {
         errorEl.hidden = true;
       }
-      renderWeatherCards(data.daily, fetchedAt, false);
+      renderWeatherCards(data, fetchedAt, false);
       renderTips(data.daily);
     } catch (err) {
       console.warn("[weather] 無法取得預報：", err);
       if (cached && cached.data && cached.data.daily) {
-        renderWeatherCards(cached.data.daily, cached.fetchedAt, true);
+        renderWeatherCards(cached.data, cached.fetchedAt, true);
         renderTips(cached.data.daily);
         showError("目前無法更新天氣，已顯示上次快取資料。");
       } else {
