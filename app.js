@@ -392,25 +392,44 @@
     return slots;
   }
 
-  function createHourlyDetails(dateIso, hourly, isToday, onTrip) {
+  function scrollHourlyToNow(scroll) {
+    requestAnimationFrame(() => {
+      const nowSlot = scroll.querySelector(".weather-hourly-slot--now");
+      if (!nowSlot) {
+        return;
+      }
+      const left = nowSlot.offsetLeft - (scroll.clientWidth - nowSlot.offsetWidth) / 2;
+      scroll.scrollLeft = Math.max(0, left);
+    });
+  }
+
+  function createHourlyBlock(dateIso, hourly, isToday, onTrip) {
     const slots = getHourlySlotsForDate(hourly, dateIso);
     if (slots.length === 0) {
       return null;
     }
 
-    const details = document.createElement("details");
-    details.className = "weather-hourly";
-    if (onTrip && isToday) {
-      details.open = true;
-    }
+    const expanded = onTrip && isToday;
+    const wrap = document.createElement("div");
+    wrap.className = "weather-hourly";
 
-    const summary = document.createElement("summary");
-    summary.textContent = onTrip && isToday ? "今日逐時預報" : "查看逐時預報";
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "weather-hourly-toggle";
+    if (expanded) {
+      toggle.classList.add("is-open");
+    }
+    toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+    toggle.textContent = expanded ? "今日逐時預報" : "查看逐時預報";
+
+    const panel = document.createElement("div");
+    panel.className = "weather-hourly-panel";
+    panel.hidden = !expanded;
 
     const scroll = document.createElement("div");
     scroll.className = "weather-hourly-scroll";
     scroll.setAttribute("role", "list");
-    scroll.setAttribute("aria-label", onTrip && isToday ? "今日逐時預報" : "逐時預報");
+    scroll.setAttribute("aria-label", expanded ? "今日逐時預報" : "逐時預報");
 
     const nowHour = currentHour();
     const todayIsTripDay = todayIso() === dateIso;
@@ -451,18 +470,24 @@
       scroll.appendChild(item);
     });
 
-    details.append(summary, scroll);
+    toggle.addEventListener("click", () => {
+      const willOpen = panel.hidden;
+      panel.hidden = !willOpen;
+      toggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      toggle.classList.toggle("is-open", willOpen);
+      if (willOpen && todayIsTripDay && isToday) {
+        scrollHourlyToNow(scroll);
+      }
+    });
 
-    if (onTrip && isToday) {
-      requestAnimationFrame(() => {
-        const nowSlot = scroll.querySelector(".weather-hourly-slot--now");
-        if (nowSlot) {
-          nowSlot.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
-        }
-      });
+    panel.appendChild(scroll);
+    wrap.append(toggle, panel);
+
+    if (expanded) {
+      scrollHourlyToNow(scroll);
     }
 
-    return details;
+    return wrap;
   }
 
   function renderWeatherCards(data, fetchedAt, stale) {
@@ -525,9 +550,9 @@
       card.append(dateEl, tempRow, descEl, rangeEl, rainEl, feelsEl);
 
       const isToday = date === today;
-      const hourlyDetails = createHourlyDetails(date, hourly, isToday, onTrip);
-      if (hourlyDetails) {
-        card.appendChild(hourlyDetails);
+      const hourlyBlock = createHourlyBlock(date, hourly, isToday, onTrip);
+      if (hourlyBlock) {
+        card.appendChild(hourlyBlock);
         card.classList.add("weather-day--has-hourly");
       }
 

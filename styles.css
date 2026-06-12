@@ -941,76 +941,75 @@ details[open] summary {
   display: flex;
   flex-direction: column;
   gap: 0;
-  overflow: hidden;
+  min-width: 0;
 }
 
 .weather-hourly {
   margin: 14px 0 0;
   padding-top: 12px;
-  border: none;
   border-top: 1px solid var(--line);
-  border-radius: 0;
-  background: transparent;
-  overflow: hidden;
-  box-shadow: none;
   min-width: 0;
   max-width: 100%;
 }
 
-.weather-hourly:hover {
-  box-shadow: none;
-}
-
-.weather-hourly summary {
-  cursor: pointer;
-  padding: 0;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--accent-dark);
-  background: transparent;
-  list-style: none;
+.weather-hourly-toggle {
   display: flex;
   align-items: center;
   gap: 6px;
+  width: 100%;
+  margin: 0;
+  padding: 4px 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-dark);
+  text-align: left;
 }
 
-.weather-hourly[open] summary {
-  border-bottom: none;
-}
-
-.weather-hourly summary::-webkit-details-marker {
-  display: none;
-}
-
-.weather-hourly summary::before {
+.weather-hourly-toggle::before {
   content: "▸";
   font-size: 11px;
   transition: transform 0.15s ease;
 }
 
-.weather-hourly[open] summary::before {
+.weather-hourly-toggle.is-open::before {
   transform: rotate(90deg);
 }
 
+.weather-hourly-toggle:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.weather-hourly-panel {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.weather-hourly-panel[hidden] {
+  display: none !important;
+}
+
+/* 橫向捲動結構對齊 .nav */
 .weather-hourly-scroll {
   display: flex;
   gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 0;
+  margin: 0;
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  margin-top: 12px;
-  padding-bottom: 6px;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-x;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
 }
 
 .weather-hourly-slot {
-  flex: 0 0 72px;
-  scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: 72px;
   padding: 10px 8px;
   border-radius: 12px;
   border: 1px solid var(--line);
@@ -1227,17 +1226,20 @@ details[open] summary {
     grid-template-columns: 1fr;
   }
 
-  .weather-hourly summary {
-    padding: 4px 0;
+  .weather-hourly-toggle {
     min-height: 36px;
   }
 
+  /* 與 .nav 類似：拉滿卡片內可滑區域，避免邊界被 padding 吃掉 */
+  .weather-hourly-panel {
+    width: calc(100% + 44px);
+    margin-left: -22px;
+    margin-right: -22px;
+  }
+
   .weather-hourly-scroll {
-    /* iOS：略為拉出卡片內距，橫滑手勢較不易被外層垂直捲動搶走 */
-    margin-left: -2px;
-    margin-right: -2px;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 22px;
+    padding-right: 22px;
   }
 
   .timeline {
@@ -1887,7 +1889,7 @@ html[data-theme="night-market"] .weather-hourly {
   border-top-color: rgba(94, 234, 212, 0.12);
 }
 
-html[data-theme="night-market"] .weather-hourly summary {
+html[data-theme="night-market"] .weather-hourly-toggle {
   color: #fdba74;
 }
 
