@@ -915,6 +915,7 @@ details[open] summary {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
   margin-bottom: 16px;
+  min-width: 0;
 }
 
 .weather-day {
@@ -922,6 +923,8 @@ details[open] summary {
   border-radius: var(--radius-md, 16px);
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.55);
+  min-width: 0;
+  max-width: 100%;
 }
 
 .weather-day--today {
@@ -938,6 +941,7 @@ details[open] summary {
   display: flex;
   flex-direction: column;
   gap: 0;
+  overflow: hidden;
 }
 
 .weather-hourly {
@@ -947,8 +951,10 @@ details[open] summary {
   border-top: 1px solid var(--line);
   border-radius: 0;
   background: transparent;
-  overflow: visible;
+  overflow: hidden;
   box-shadow: none;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .weather-hourly:hover {
@@ -989,10 +995,16 @@ details[open] summary {
 .weather-hourly-scroll {
   display: flex;
   gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   margin-top: 12px;
-  padding-bottom: 4px;
-  overflow-x: auto;
+  padding-bottom: 6px;
+  overflow-x: scroll;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
 }
 
@@ -1213,6 +1225,19 @@ details[open] summary {
   .card-grid,
   .weather-grid {
     grid-template-columns: 1fr;
+  }
+
+  .weather-hourly summary {
+    padding: 4px 0;
+    min-height: 36px;
+  }
+
+  .weather-hourly-scroll {
+    /* iOS：略為拉出卡片內距，橫滑手勢較不易被外層垂直捲動搶走 */
+    margin-left: -2px;
+    margin-right: -2px;
+    padding-left: 2px;
+    padding-right: 2px;
   }
 
   .timeline {
