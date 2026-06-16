@@ -330,12 +330,6 @@
     const maxRain = Math.max(...daily.precipitation_probability_max);
     const maxTemp = Math.max(...daily.temperature_2m_max);
 
-    if (day2Rain >= 50) {
-      tips.push(
-        "Day 2 戶外多：6/20 降雨機率偏高，四草／安平建議帶輕便雨具，竹筏留意現場公告。"
-      );
-    }
-
     if (maxTemp >= 32) {
       tips.push(
         "氣溫偏高：補水與冰品當正式行程，八寶彬圓仔惠、南泉冰菓室可列入備案。"
@@ -633,7 +627,7 @@
 // 內文區塊若要禁止自動連結，請在父層加 data-no-map-link。
 (async function linkifyPlacesFromJson() {
   /* 變更 places.json 內容時可遞增，讓瀏覽器略過舊的快取項目。 */
-  const placesJsonVersion = 12;
+  const placesJsonVersion = 17;
   let config;
   try {
     const configUrl = new URL(`places.json?v=${placesJsonVersion}`, document.baseURI || location.href).href;
