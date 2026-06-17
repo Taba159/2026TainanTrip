@@ -105,6 +105,18 @@
       <a href="#notes">提醒</a>
     </nav>
 
+    <aside id="trip-focus" class="trip-focus" hidden aria-live="polite" aria-label="依時間聚焦的目前行程">
+      <div class="trip-focus__inner">
+        <span id="trip-focus-badge" class="trip-focus__badge"></span>
+        <div class="trip-focus__copy">
+          <p id="trip-focus-now" class="trip-focus__line trip-focus__line--now"></p>
+          <p id="trip-focus-next" class="trip-focus__line trip-focus__line--next"></p>
+        </div>
+        <a id="trip-focus-jump" class="trip-focus__jump button secondary" href="#">跳到這裡</a>
+        <button type="button" id="trip-focus-dismiss" class="trip-focus__dismiss" aria-label="暫時關閉時間聚焦">關閉</button>
+      </div>
+    </aside>
+
     <section id="transport">
       <div class="section-card">
         <div class="section-title">
@@ -453,35 +465,35 @@
         </div>
         <div class="timeline">
           <div class="time-slot">上午</div>
-          <div class="plan-item">
+          <div class="plan-item" data-focus-at="12:32">
             <h3>627 次高鐵南下，抵達台南高鐵站</h3>
             <p>各站時刻見<a class="ext-link ext-link--inpage" href="#transport">交通</a>區塊；<strong>12:32 抵台南高鐵站</strong>，轉沙崙線至台南火車站。</p>
           </div>
           <div class="time-slot">中午</div>
-          <div class="plan-item">
+          <div class="plan-item" data-focus-at="12:47">
             <h3>Taba 台鐵抵達台南火車站</h3>
             <p>自<span class="highlight">新左營</span>搭 <strong>3188 次區間車</strong>（11:59 發 → <strong>12:47 抵</strong>台南火車站，潮州→后里）。抵達後等候多數人會合，再一同前往租車／民宿（詳見<a class="ext-link ext-link--inpage" href="#tra-taba">交通區 Taba 去程表</a>）。</p>
           </div>
-          <div class="plan-item">
+          <div class="plan-item" data-focus-at="13:15">
             <h3>抵達台南火車站租車，前往中西區民宿寄放行李／入住</h3>
             <p>午餐：<span class="highlight">矮仔成蝦仁飯＋鼎富發豬油拌飯</span>。兩間距離近，適合小吃連線；鼎富發建議多人分食，保留下午飲料與晚餐戰力。</p>
           </div>
           <div class="time-slot">下午</div>
-          <div class="plan-item">
+          <div class="plan-item" data-focus-at="14:00">
             <h3>Taba 取堯平布朗尼</h3>
             <p>抵達住宿後，<strong>Taba</strong>騎車前往<span class="highlight">堯平二店</span>（北區自強街）外帶布朗尼；順路亦可去<span class="highlight">古早味茶飲</span>（協進國小旁）帶一瓶花生牛奶、<span class="highlight">松村滷味</span>外帶滷味。其他人可先整理行李或待命，再一起出發南美館／國華街一帶。</p>
           </div>
-          <div class="plan-item">
+          <div class="plan-item" data-focus-at="14:30">
             <h3>台南美術館 2 館、蝸牛巷、國華街、西門淺草市場、正興街</h3>
             <p>點心：<span class="highlight">阿松割包、金得春捲</span>；國華街一帶可順逛<span class="highlight">西門淺草市場</span>（西市場），候選店見下方摺疊區。飲料擇一：青山茶行／雙全紅茶／布萊恩紅茶／登出茶飲。中午太飽就不用硬吃。</p>
           </div>
           <div class="time-slot">傍晚</div>
-          <div class="plan-item">
+          <div class="plan-item" data-focus-at="17:00">
             <h3>海安路、河樂廣場，轉往神農街</h3>
             <p>休息備案：<span class="highlight">Present Coffee／秘氏咖啡</span>。精神還在線上就直接散步，太熱就進咖啡廳冷卻。</p>
           </div>
           <div class="time-slot">晚上</div>
-          <div class="plan-item">
+          <div class="plan-item" data-focus-at="19:00">
             <h3>外帶回民宿，邊看電視邊吃</h3>
             <p>傍晚散步或轉場時順路打包外帶，回民宿放鬆、看電視、聊天。推薦：<span class="highlight">炸雞洋行海安店、8818比薩屋、ThinkPizza、盛田滷味、松村滷味、炒作伙</span>，以及<span class="highlight">南興炒鱔魚、阿文豬心冬粉</span>等可外帶品項；也可夜市分食打包帶回。外出備案：<span class="highlight">神農街、海安路街區＋大東／大東東夜市</span>現場吃、散步遊戲續攤。</p>
           </div>
@@ -588,15 +600,15 @@
         </div>
         <div class="timeline">
           <div class="time-slot">上午</div>
-          <div class="plan-item"><h3>早起王氏魚皮，前往四草綠色隧道</h3><p>早餐先預定<span class="highlight">王氏魚皮</span>；牛肉湯留下午安平一帶再喝。四草竹筏建議先訂票。</p></div>
+          <div class="plan-item" data-focus-at="08:00"><h3>早起王氏魚皮，前往四草綠色隧道</h3><p>早餐先預定<span class="highlight">王氏魚皮</span>；牛肉湯留下午安平一帶再喝。四草竹筏建議先訂票。</p></div>
           <div class="time-slot">下午</div>
-          <div class="plan-item"><h3>安平出張所、大魚的祝福</h3><p>必去：<span class="highlight">安平出張所</span>（前身夕遊出張所，2025 重新開幕）——百年日式古蹟結合鹽文化，後院有<strong>水豚</strong>「大麥」「栗子」與寶寶「糯米」，免門票，值得特地繞進去。午餐：<span class="highlight">丹丹漢堡安平店</span>；順路再到<span class="highlight">大魚的祝福</span>拍照。</p></div>
-          <div class="plan-item"><h3>午後牛肉湯</h3><p>安平散步後喝一碗，擇一：<span class="highlight">文章牛肉湯、二牛牛肉湯、阿財牛肉湯</span>。可搭配<span class="highlight">安平傳統豆花</span>當下午茶，不必全吃。</p></div>
-          <div class="plan-item"><h3>回民宿休息</h3><p>安平午後告一段落，騎車回住宿吹冷氣、躺一下，補體力後再出發漁光島看日落。</p></div>
+          <div class="plan-item" data-focus-at="13:00"><h3>安平出張所、大魚的祝福</h3><p>必去：<span class="highlight">安平出張所</span>（前身夕遊出張所，2025 重新開幕）——百年日式古蹟結合鹽文化，後院有<strong>水豚</strong>「大麥」「栗子」與寶寶「糯米」，免門票，值得特地繞進去。午餐：<span class="highlight">丹丹漢堡安平店</span>；順路再到<span class="highlight">大魚的祝福</span>拍照。</p></div>
+          <div class="plan-item" data-focus-at="15:00"><h3>午後牛肉湯</h3><p>安平散步後喝一碗，擇一：<span class="highlight">文章牛肉湯、二牛牛肉湯、阿財牛肉湯</span>。可搭配<span class="highlight">安平傳統豆花</span>當下午茶，不必全吃。</p></div>
+          <div class="plan-item" data-focus-at="16:00"><h3>回民宿休息</h3><p>安平午後告一段落，騎車回住宿吹冷氣、躺一下，補體力後再出發漁光島看日落。</p></div>
           <div class="time-slot">傍晚</div>
-          <div class="plan-item"><h3>騎車過橋到漁光島看日落</h3><p>6/20（六）台南日落約 <strong>18:47</strong>。確認 Day 3 行李<strong>寄車行</strong>或<strong>隨行</strong>（不留民宿）。</p></div>
+          <div class="plan-item" data-focus-at="17:30"><h3>騎車過橋到漁光島看日落</h3><p>6/20（六）台南日落約 <strong>18:47</strong>。確認 Day 3 行李<strong>寄車行</strong>或<strong>隨行</strong>（不留民宿）。</p></div>
           <div class="time-slot">晚上</div>
-          <div class="plan-item"><h3>花園夜市</h3><p>必吃：<span class="highlight">二師兄滷味、麻辣鴨血</span>；6 人分食、玩夜市遊戲。</p></div>
+          <div class="plan-item" data-focus-at="19:30"><h3>花園夜市</h3><p>必吃：<span class="highlight">二師兄滷味、麻辣鴨血</span>；6 人分食、玩夜市遊戲。</p></div>
         </div>
       </article>
 
@@ -654,15 +666,15 @@
         </div>
         <div class="timeline">
           <div class="time-slot time-slot--span-2">上午</div>
-          <div class="plan-item"><h3>阿堂鹹粥早午餐</h3><p>推薦：綜合鹹粥、虱目魚肚、蝦仁飯。</p></div>
-          <div class="plan-item"><h3>全員還車 · 送 Kai 搭車</h3><p>早餐後全員至<strong>台南火車站詠心同行</strong>還車（與 Kai 同時，建議 <strong>10:00 前</strong>完成）。行李<strong>寄放車行</strong>或<strong>隨行攜帶</strong>，不留民宿。</p><p>Kai 高鐵 <span class="highlight">11:28 台南高鐵站</span>發；沙崙線 <span class="highlight">3723 次</span>，<strong>10:26 台南火車站</strong>發（<a class="ext-link ext-link--inpage" href="#tra-shalun-kai">轉乘表</a>）。建議 <strong>09:30 前</strong>自民宿出發、<strong>10:20 前</strong>送 Kai 進站，勿搭 3725（會來不及）。</p></div>
+          <div class="plan-item" data-focus-at="08:00"><h3>阿堂鹹粥早午餐</h3><p>推薦：綜合鹹粥、虱目魚肚、蝦仁飯。</p></div>
+          <div class="plan-item" data-focus-at="09:30"><h3>全員還車 · 送 Kai 搭車</h3><p>早餐後全員至<strong>台南火車站詠心同行</strong>還車（與 Kai 同時，建議 <strong>10:00 前</strong>完成）。行李<strong>寄放車行</strong>或<strong>隨行攜帶</strong>，不留民宿。</p><p>Kai 高鐵 <span class="highlight">11:28 台南高鐵站</span>發；沙崙線 <span class="highlight">3723 次</span>，<strong>10:26 台南火車站</strong>發（<a class="ext-link ext-link--inpage" href="#tra-shalun-kai">轉乘表</a>）。建議 <strong>09:30 前</strong>自民宿出發、<strong>10:20 前</strong>送 Kai 進站，勿搭 3725（會來不及）。</p></div>
           <div class="time-slot time-slot--span-2">中午</div>
-          <div class="plan-item"><h3>送 Kai 後 · 成功大學散步</h3><p>3723 次 <strong>10:26 發</strong>後，經<strong>後站</strong>進<span class="highlight">國立成功大學</span>輕量散步（約 <strong>10:30～10:55</strong>）。可順走<strong>勝利堂、古蹟群、椰林大道</strong>一帶，不鑽太深；<strong>10:55 前</strong>往大遠百方向移動。</p></div>
-          <div class="plan-item"><h3>大遠百午餐</h3><p>步行至<strong>台南大遠百成功店</strong>，午餐 <span class="highlight">瓦城泰國料理 3F</span>（<strong>11:00</strong> 入席，用餐約 90 分鐘）。<strong>12:30 前</strong>離店，經地下道回前站；貳家<strong>禁帶外食</strong>，13:00 入場前須吃完。訂位：06-208-8018。</p></div>
+          <div class="plan-item" data-focus-at="10:30"><h3>送 Kai 後 · 成功大學散步</h3><p>3723 次 <strong>10:26 發</strong>後，經<strong>後站</strong>進<span class="highlight">國立成功大學</span>輕量散步（約 <strong>10:30～10:55</strong>）。可順走<strong>勝利堂、古蹟群、椰林大道</strong>一帶，不鑽太深；<strong>10:55 前</strong>往大遠百方向移動。</p></div>
+          <div class="plan-item" data-focus-at="11:00"><h3>大遠百午餐</h3><p>步行至<strong>台南大遠百成功店</strong>，午餐 <span class="highlight">瓦城泰國料理 3F</span>（<strong>11:00</strong> 入席，用餐約 90 分鐘）。<strong>12:30 前</strong>離店，經地下道回前站；貳家<strong>禁帶外食</strong>，13:00 入場前須吃完。訂位：06-208-8018。</p></div>
           <div class="time-slot">下午</div>
-          <div class="plan-item"><h3>貳家桌遊台南車站店</h3><p><span class="highlight">貳家桌遊台南車站店</span>（中山路 193 號，步行可達）。建議 <strong>13:00 入場、15:30 前離店</strong>，留時間步行至晚餐（暫排小豪洲，備案會饗牛肉湯）。須<strong>線上預約</strong>（6 人建議訂 10 人包廂或大桌）；週日營業 <strong>11:30～22:30</strong>，現場飲料低消約 $120／人。<a class="ext-link ext-link--web" href="https://www.oursecondhome12.com/product-category/%e8%b2%b3%e5%ae%b6%e6%a1%8c%e9%81%8a%e5%8d%97%e7%ab%99%e5%ba%97/" target="_blank" rel="noopener noreferrer">官網預約</a></p></div>
+          <div class="plan-item" data-focus-at="13:00"><h3>貳家桌遊台南車站店</h3><p><span class="highlight">貳家桌遊台南車站店</span>（中山路 193 號，步行可達）。建議 <strong>13:00 入場、15:30 前離店</strong>，留時間步行至晚餐（暫排小豪洲，備案會饗牛肉湯）。須<strong>線上預約</strong>（6 人建議訂 10 人包廂或大桌）；週日營業 <strong>11:30～22:30</strong>，現場飲料低消約 $120／人。<a class="ext-link ext-link--web" href="https://www.oursecondhome12.com/product-category/%e8%b2%b3%e5%ae%b6%e6%a1%8c%e9%81%8a%e5%8d%97%e7%ab%99%e5%ba%97/" target="_blank" rel="noopener noreferrer">官網預約</a></p></div>
           <div class="time-slot">傍晚</div>
-          <div class="plan-item"><h3>晚餐後分道：多數人高鐵／Taba 台鐵回程</h3><p>晚餐暫排：<span class="highlight">小豪洲沙茶爐 中山店 16:00</span>；備案：<span class="highlight">會饗牛肉湯</span>。若行李寄車行，晚餐前至<strong>詠心同行</strong>領回；若隨行則直接前往。</p><p><strong>多數人：</strong>步行至台南火車站搭沙崙線轉高鐵 <span class="highlight">1250 次</span>（<strong>18:28 台南高鐵站</strong>發，見<a class="ext-link ext-link--inpage" href="#transport">交通</a>）。<strong>Taba：</strong>自前站搭 <span class="highlight">3231 次</span>區間車（<strong>17:37 發 → 18:19 抵新左營</strong>，斗六→潮州；詳見<a class="ext-link ext-link--inpage" href="#tra-taba-return">Taba 回程表</a>）。</p></div>
+          <div class="plan-item" data-focus-at="16:00"><h3>晚餐後分道：多數人高鐵／Taba 台鐵回程</h3><p>晚餐暫排：<span class="highlight">小豪洲沙茶爐 中山店 16:00</span>；備案：<span class="highlight">會饗牛肉湯</span>。若行李寄車行，晚餐前至<strong>詠心同行</strong>領回；若隨行則直接前往。</p><p><strong>多數人：</strong>步行至台南火車站搭沙崙線轉高鐵 <span class="highlight">1250 次</span>（<strong>18:28 台南高鐵站</strong>發，見<a class="ext-link ext-link--inpage" href="#transport">交通</a>）。<strong>Taba：</strong>自前站搭 <span class="highlight">3231 次</span>區間車（<strong>17:37 發 → 18:19 抵新左營</strong>，斗六→潮州；詳見<a class="ext-link ext-link--inpage" href="#tra-taba-return">Taba 回程表</a>）。</p></div>
         </div>
       </article>
 

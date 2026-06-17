@@ -64,6 +64,245 @@
   el.hidden = false;
 })();
 
+(function initTripFocus() {
+  const bar = document.getElementById("trip-focus");
+  const badgeEl = document.getElementById("trip-focus-badge");
+  const nowEl = document.getElementById("trip-focus-now");
+  const nextEl = document.getElementById("trip-focus-next");
+  const jumpLink = document.getElementById("trip-focus-jump");
+  const dismissBtn = document.getElementById("trip-focus-dismiss");
+  if (!bar || !badgeEl || !nowEl || !nextEl || !jumpLink || !dismissBtn) return;
+
+  const STORAGE_OFF = "tainan-trip-focus-off";
+  const TRIP_DAYS = [
+    { sectionId: "day1", date: new Date(2026, 5, 19), label: "Day 1" },
+    { sectionId: "day2", date: new Date(2026, 5, 20), label: "Day 2" },
+    { sectionId: "day3", date: new Date(2026, 5, 21), label: "Day 3" },
+  ];
+  const TRIP_START = TRIP_DAYS[0].date;
+  const TRIP_END = new Date(2026, 5, 22);
+
+  const allItems = [];
+  TRIP_DAYS.forEach((day, dayIdx) => {
+    const section = document.getElementById(day.sectionId);
+    if (!section) return;
+    const card = section.querySelector(".day-card");
+    const nodes = section.querySelectorAll(".plan-item[data-focus-at]");
+    nodes.forEach((el, itemIdx) => {
+      const raw = el.getAttribute("data-focus-at");
+      const m = raw && raw.match(/^(\d{1,2}):(\d{2})$/);
+      if (!m) return;
+      const at = new Date(
+        day.date.getFullYear(),
+        day.date.getMonth(),
+        day.date.getDate(),
+        parseInt(m[1], 10),
+        parseInt(m[2], 10)
+      );
+      const id = el.id || `trip-focus-d${dayIdx + 1}-${itemIdx + 1}`;
+      if (!el.id) el.id = id;
+      const titleEl = el.querySelector("h3");
+      const title = titleEl ? titleEl.textContent.trim() : "行程";
+      allItems.push({ el, card, day, dayIdx, at, title, id, timeLabel: raw });
+    });
+  });
+
+  function dateOnly(d) {
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+
+  function resolveNow() {
+    const params = new URLSearchParams(location.search);
+    const override = params.get("tripNow");
+    if (override) {
+      const parsed = new Date(override);
+      if (!isNaN(parsed.getTime())) return parsed;
+    }
+    return new Date();
+  }
+
+  function isEnabled(now) {
+    const params = new URLSearchParams(location.search);
+    if (params.get("focus") === "1") return true;
+    try {
+      if (localStorage.getItem(STORAGE_OFF) === "1") return false;
+    } catch (_) {}
+    const today = dateOnly(now);
+    return today >= TRIP_START && today < TRIP_END;
+  }
+
+  function formatClock(d) {
+    const h = d.getHours();
+    const m = d.getMinutes();
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  }
+
+  function minutesUntil(from, to) {
+    return Math.max(0, Math.round((to - from) / 60000));
+  }
+
+  function findTodayState(now) {
+    const today = dateOnly(now);
+    const dayMeta = TRIP_DAYS.find(
+      (d) =>
+        d.date.getFullYear() === today.getFullYear() &&
+        d.date.getMonth() === today.getMonth() &&
+        d.date.getDate() === today.getDate()
+    );
+    if (!dayMeta) return null;
+
+    const todayItems = allItems.filter((it) => it.day.sectionId === dayMeta.sectionId);
+    let current = null;
+    let next = null;
+
+    for (let i = 0; i < todayItems.length; i++) {
+      if (now >= todayItems[i].at) {
+        current = todayItems[i];
+      } else {
+        next = todayItems[i];
+        break;
+      }
+    }
+
+    return { dayMeta, todayItems, current, next };
+  }
+
+  function clearFocusClasses() {
+    document.querySelectorAll(".plan-item--focus-past, .plan-item--focus-now, .plan-item--focus-next").forEach((el) => {
+      el.classList.remove("plan-item--focus-past", "plan-item--focus-now", "plan-item--focus-next");
+    });
+    document.querySelectorAll(".day-card--focus-past, .day-card--focus-today, .day-card--focus-future").forEach((el) => {
+      el.classList.remove("day-card--focus-past", "day-card--focus-today", "day-card--focus-future");
+    });
+  }
+
+  function applyDayCardStates(now) {
+    const today = dateOnly(now);
+    TRIP_DAYS.forEach((day) => {
+      const section = document.getElementById(day.sectionId);
+      if (!section) return;
+      const card = section.querySelector(".day-card");
+      if (!card) return;
+      const dayDate = dateOnly(day.date);
+      if (dayDate < today) {
+        card.classList.add("day-card--focus-past");
+      } else if (dayDate.getTime() === today.getTime()) {
+        card.classList.add("day-card--focus-today");
+      } else if (today >= TRIP_START && today < TRIP_END) {
+        card.classList.add("day-card--focus-future");
+      }
+    });
+  }
+
+  function applyItemStates(state, now) {
+    if (!state) return;
+    const { dayMeta, todayItems, current, next } = state;
+    const today = dateOnly(now);
+
+    todayItems.forEach((it) => {
+      if (current && it.id === current.id) {
+        it.el.classList.add("plan-item--focus-now");
+      } else if (next && it.id === next.id) {
+        it.el.classList.add("plan-item--focus-next");
+      } else if (it.at < now) {
+        it.el.classList.add("plan-item--focus-past");
+      }
+    });
+
+    allItems.forEach((it) => {
+      if (it.day.sectionId === dayMeta.sectionId) return;
+      if (dateOnly(it.day.date) < today) {
+        it.el.classList.add("plan-item--focus-past");
+      }
+    });
+  }
+
+  function renderBar(state, now) {
+    if (!state) {
+      bar.hidden = true;
+      document.documentElement.classList.remove("trip-focus-active");
+      return;
+    }
+
+    const { dayMeta, current, next } = state;
+    badgeEl.textContent = `${dayMeta.label} · ${formatClock(now)}`;
+
+    if (!current && next) {
+      const mins = minutesUntil(now, next.at);
+      nowEl.textContent = `即將開始 · ${next.title}`;
+      nextEl.textContent =
+        mins > 0 ? `約 ${mins} 分鐘後（${next.timeLabel}）` : `時間到了（${next.timeLabel}）`;
+      jumpLink.href = `#${next.id}`;
+      jumpLink.textContent = "跳到首項";
+    } else if (current && !next) {
+      nowEl.textContent = `進行中 · ${current.title}`;
+      nextEl.textContent = "今日主行程已進入尾聲";
+      jumpLink.href = `#${current.id}`;
+      jumpLink.textContent = "跳到這裡";
+    } else if (current && next) {
+      const mins = minutesUntil(now, next.at);
+      nowEl.textContent = `進行中 · ${current.title}`;
+      nextEl.textContent = `接下來 · ${next.title}（${next.timeLabel}${mins > 0 ? `，約 ${mins} 分鐘後` : ""}）`;
+      jumpLink.href = `#${current.id}`;
+      jumpLink.textContent = "跳到這裡";
+    } else {
+      nowEl.textContent = `${dayMeta.label} 行程`;
+      nextEl.textContent = "今日無標記項目";
+      jumpLink.hidden = true;
+    }
+
+    if (current || next) {
+      jumpLink.hidden = false;
+    }
+
+    bar.hidden = false;
+    document.documentElement.classList.add("trip-focus-active");
+  }
+
+  function update() {
+    const now = resolveNow();
+    if (!isEnabled(now)) {
+      clearFocusClasses();
+      bar.hidden = true;
+      document.documentElement.classList.remove("trip-focus-active");
+      return;
+    }
+
+    clearFocusClasses();
+    applyDayCardStates(now);
+    const state = findTodayState(now);
+    applyItemStates(state, now);
+    renderBar(state, now);
+  }
+
+  dismissBtn.addEventListener("click", () => {
+    try {
+      localStorage.setItem(STORAGE_OFF, "1");
+    } catch (_) {}
+    clearFocusClasses();
+    bar.hidden = true;
+    document.documentElement.classList.remove("trip-focus-active");
+  });
+
+  jumpLink.addEventListener("click", (e) => {
+    const href = jumpLink.getAttribute("href");
+    if (!href || href === "#") return;
+    const target = document.querySelector(href);
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "center" });
+    history.replaceState(null, "", href);
+    target.classList.add("plan-item--focus-flash");
+    window.setTimeout(() => target.classList.remove("plan-item--focus-flash"), 1400);
+  });
+
+  update();
+  window.setInterval(update, 60000);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) update();
+  });
+})();
+
 (function initGoogleCalendarTripLink() {
   function googleCalendarTripUrl() {
     const text = "2026 台南三天兩夜（6/19～6/21）";
